@@ -10,11 +10,14 @@
     @author McKilla Gorilla
 */
 
-import axios from 'axios'
-axios.defaults.withCredentials = true;
-const api = axios.create({
-    baseURL: 'http://localhost:4000/auth',
-})
+// import axios from 'axios'
+// axios.defaults.withCredentials = true;
+// const api = axios.create({
+//     baseURL: 'http://localhost:4000/auth',
+// })
+
+import { Fetcher } from "../../Fetcher";
+const api = new Fetcher("http://localhost:4000/auth");
 
 // THESE ARE ALL THE REQUESTS WE`LL BE MAKING, ALL REQUESTS HAVE A
 // REQUEST METHOD (like get) AND PATH (like /register). SOME ALSO
