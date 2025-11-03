@@ -1,53 +1,51 @@
-const dotenv = require('dotenv').config({ path: __dirname + '/../../../.env' });
-import { Sequelize } from "sequelize";
+const dotenv = require('dotenv');
+dotenv.config();
+const { sequelize } = require('../../../db/postgresql');
 
-async function clearTable(model, modelName) {
-  try {
-    await model.destroy({ where: {}, truncate: true });
-    console.log(`${modelName} cleared`);
-  } catch (err) {
-    console.error(err);
-  }
+// function getID(){
+//     out = [...Array(24)];//create empty 24 long Array
+//     out.map(() => Math.floor(Math.random() * 16).toString(16)); //fill with random hex
+//     return out.join("");//join and return
+// }
+async function createUsers(data, Model) {
+    for (const user of data) { //testData.users
+        const newUser = await Model.create({
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            passwordHash: user.passwordHash,
+        });
+    }
 }
 
-async function fillTable(model, modelName, data) {
-  try {
-    await model.bulkCreate(data);
-    console.log(`${modelName} filled`);
-  } catch (err) {
-    console.error(err);
-  }
+async function createPlayLists(data, Model) {
+    for (const playlist of data) {
+        const newPlaylist = await Model.create({
+            _id: playlist._id,
+            ownerEmail: playlist.ownerEmail,
+            name: playlist.name,
+            songs: playlist.songs,
+        });
+    }
 }
-
-async function resetSQL() {
-    const Playlist = require('../../../models/postgre/playlist-model')
-    const User = require("../../../models/postgre/user-model")
+async function resetSQL(_user, _playlist) {
     const testData = require("../example-db-data.json")
-
-    console.log("Resetting the Mongo DB")
-    await clearCollection(Playlist, "Playlist");
-    await clearCollection(User, "User");
-    await fillCollection(Playlist, "Playlist", testData.playlists);
-    await fillCollection(User, "User", testData.users);
+    console.log("Resetting the SQL DB")
+    await createUsers(testData.users, _user);
+    await createPlayLists(testData.playlists, _playlist);
 }
 
-const mongoose = require('mongoose')
-mongoose
-    .connect(process.env.DB_CONNECT, { useNewUrlParser: true })
-    .then(() => { resetMongo() })
-    .catch(e => {
-        console.error('Connection error', e.message)
-    })
-
-
-const sequelize = new Sequelize(
-  process.env.DB_NAME,
-  process.env.DB_USER,
-  process.env.DB_PASSWORD,
-  {
-    host: process.env.DB_HOST,
-    dialect: "postgres",
-    logging: false,
-  }
-);
-
+(async () => {
+    try{
+        const {User, Playlist} = require('../../../models/postgre/associations')
+        await sequelize.authenticate();
+        console.log("authenticated");
+        await sequelize.sync({ force: true });
+        console.log("synced tables");
+        await resetSQL(User, Playlist)
+    } catch (err){
+        console.error("error:" + err.message);
+    } finally {
+        await sequelize.close();
+    }
+})();

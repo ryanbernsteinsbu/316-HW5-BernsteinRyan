@@ -1,12 +1,7 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../../db/postgresql";
-import Playlist from "./playlist-model.js";
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../../db/postgresql');
 
 const User = sequelize.define("User", {
-    id: {
-        type: DataTypes.STRING(24),
-        primaryKey: true,
-    },
     firstName: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -17,14 +12,13 @@ const User = sequelize.define("User", {
     },
     email : {
         type: DataTypes.STRING,
-        allowNull: false,
+        primaryKey: true,
     },
     passwordHash: {
         type: DataTypes.STRING,
         allowNull: false,
     },
 });
-User.hasMany(Playlist, { foreignKey: "userId" });
 
-export default User;
+module.exports = User;
 

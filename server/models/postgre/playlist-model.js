@@ -1,9 +1,8 @@
-import { DataTypes } from "sequelize";
-import sequelize from "../../db/postgresql";
-import User from "./user-model.js";
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('../../db/postgresql');
 
 const Playlist = sequelize.define("Playlist", {
-    id: {
+    _id: {
         type: DataTypes.STRING(24),
         primaryKey: true,
     },
@@ -14,8 +13,11 @@ const Playlist = sequelize.define("Playlist", {
     songs: {
         type: DataTypes.JSONB, 
         defaultValue: [],
+    },
+    ownerEmail: {
+        type: DataTypes.STRING, 
+        allowNull: false,
     }
 });
-Playlist.belongsTo(User, { foreignKey: "userId" });
 
-export default Playlist;
+module.exports = Playlist;
