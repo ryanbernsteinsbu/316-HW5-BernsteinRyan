@@ -49,14 +49,14 @@ deletePlaylist = async (req, res) => {
                 errorMessage: 'Playlist not found!',
             })
         }
-
-        const user = dbm.asyncFindUser(playlist); //get user
+        const user = await dbm.asyncFindUser(playlist); //get user
         if(!user){
             return res.status(404).json({
                 errorMessage: 'User not found!',
             })
         }
-
+        // console.log("dbm user:" + user._id);
+        // console.log("req user:" + req.userId);
         if (user._id == req.userId) { //verify user
             console.log("correct user!");
             const deleted = await dbm.deletePlaylist(playlist._id);

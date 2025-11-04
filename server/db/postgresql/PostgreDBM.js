@@ -1,21 +1,16 @@
-const PlaylistModel = require("../../models/mongodb/playlist-model");
-const UserModel = require("../../models/mongodb/user-model");
+const {UserModel, PlaylistModel} = require('../../models/postgre/associations.js')
 const DatabaseManager = require("../DatabaseManager.js")
-class MongoDBM extends DatabaseManager{
+class PostgreDBM extends DatabaseManager{
     constructor(connection, UserModel, PlaylistModel){
         super(connection, UserModel, PlaylistModel);
     }
     createPlaylist(body, userId) {
         async function doCreatePlaylist(){
             try {
-                const playlist = new PlaylistModel(body);
-
-                const user = await UserModel.findById(userId);
+                const user = await UserModel.findOne({ where: { _id: userId } })
                 if (!user) throw new Error("User not found");
 
-                user.playlists.push(playlist._id);
-                await user.save();
-                await playlist.save();
+                const playlist = new PlaylistModel.create(body);
 
                 return playlist;
             } catch (err) {
@@ -28,8 +23,8 @@ class MongoDBM extends DatabaseManager{
     deletePlaylist(id) {
         async function doDelete() {
             try {
-                const deleted = await PlaylistModel.findByIdAndDelete(id);
-                return !!deleted; //convert to boolean
+                const deleted = await PlaylistModel.destroy({ where: { _id: id } });
+                return deleted > 0;
             } catch (err) {
                 console.error("Error deleting playlist:", err.message);
                 return false;
@@ -40,7 +35,7 @@ class MongoDBM extends DatabaseManager{
    replacePlaylist(id, body) {
         async function doReplace() {
             try {
-                const list = await PlaylistModel.findById(id);
+                const list = await PlaylistModel.findByPk(id);
                 if (!list) return false;
 
                 list.name = body.playlist.name;
@@ -57,7 +52,7 @@ class MongoDBM extends DatabaseManager{
     getPlaylistPairs(email) {
         async function doGetPairs() {
             try {
-                const playlists = await PlaylistModel.find({ ownerEmail: email });
+                const playlists = await PlaylistModel.findAll({ where: { ownerEmail: email } });
                 if (!playlists || !playlists.length){
                     return [];
                 }
@@ -82,7 +77,7 @@ class MongoDBM extends DatabaseManager{
     getPlaylist(id) {
         async function doGetPlaylist() {
             try {
-                const playlist = await PlaylistModel.findById(id);
+                const playlist = await PlaylistModel.findByPk(id);
                 if(playlist){
                     return playlist;
                 } else {
@@ -98,7 +93,7 @@ class MongoDBM extends DatabaseManager{
     getPlaylists(){
         async function doGetPlaylists() {
             try {
-                const playlists = await PlaylistModel.find({});
+                const playlists = await PlaylistModel.findAll();
                 if(playlists){
                     return playlists;
                 } else {
@@ -112,10 +107,18 @@ class MongoDBM extends DatabaseManager{
         return doGetPlaylists();
     }
     createUser(body) {
+        function getID(){
+            out = [...Array(24)].map(() => Math.floor(Math.random() * 16).toString(16)); //fill with random hex
+            return out.join("");//join and return
+        }
+
         async function doCreateUser() {
             try {
-                const newUser = new UserModel(body);
-                await newUser.save();
+                const userData = {
+                    _id: getID(),
+                    ...body
+                };
+                const newUser = await UserModel.create(userData);
                 return newUser;
             } catch (err) {
                 console.error("Error creating user:", err.message);
@@ -127,7 +130,7 @@ class MongoDBM extends DatabaseManager{
     getUser(id) {
         async function doGetUser() {
             try {
-                const user = await UserModel.findById(id);
+                const user = await UserModel.findOne({ where: { _id: id } });
                 if(user){
                     return user;
                 } else {
@@ -143,7 +146,7 @@ class MongoDBM extends DatabaseManager{
     findUser(email) {
         async function doFindUser() {
             try {
-                const user = await UserModel.findOne({ email: email });
+                const user = await UserModel.findOne({ where: { email: email} });
                 if(user){
                     return user;
                 } else {
@@ -159,8 +162,7 @@ class MongoDBM extends DatabaseManager{
     asyncFindUser(list) {
         async function doAsyncFindUser() {
             try {
-                const user = await UserModel.findOne({ email: list.ownerEmail });
-                console.log(user.firstName);
+                const user = await UserModel.findByPk(list.ownerEmail);
                 if(user){
                     return user;
                 } else {
@@ -175,4 +177,5 @@ class MongoDBM extends DatabaseManager{
     }
 }
 
-module.exports = MongoDBM;
+module.exports = PostgreDBM;
+

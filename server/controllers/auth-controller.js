@@ -1,5 +1,5 @@
+const dbm = require('../db/index.js')
 const auth = require('../auth')
-const User = require('../models/mongodb/user-model')
 const bcrypt = require('bcryptjs')
 
 getLoggedIn = async (req, res) => {
@@ -13,7 +13,7 @@ getLoggedIn = async (req, res) => {
             })
         }
 
-        const loggedInUser = await User.findOne({ _id: userId });
+        const loggedInUser = await dbm.getUser(userId);
         console.log("loggedInUser: " + loggedInUser);
 
         return res.status(200).json({
@@ -41,7 +41,8 @@ loginUser = async (req, res) => {
                 .json({ errorMessage: "Please enter all required fields." });
         }
 
-        const existingUser = await User.findOne({ email: email });
+        console.log(email);
+        const existingUser = await dbm.findUser(email);
         console.log("existingUser: " + existingUser);
         if (!existingUser) {
             return res
@@ -121,7 +122,7 @@ registerUser = async (req, res) => {
                 })
         }
         console.log("password and password verify match");
-        const existingUser = await User.findOne({ email: email });
+        const existingUser = await dbm.findUser(email);
         console.log("existingUser: " + existingUser);
         if (existingUser) {
             return res
@@ -137,8 +138,13 @@ registerUser = async (req, res) => {
         const passwordHash = await bcrypt.hash(password, salt);
         console.log("passwordHash: " + passwordHash);
 
-        const newUser = new User({firstName, lastName, email, passwordHash});
-        const savedUser = await newUser.save();
+        // const newUser = new User({firstName, lastName, email, passwordHash});
+        // const savedUser = await newUser.save();
+        const newBody = {
+            ...req.body,
+            passwordHash: passwordHash
+        }
+        const savedUser = await dbm.createUser(newBody);
         console.log("new user saved: " + savedUser._id);
 
         // LOGIN THE USER
