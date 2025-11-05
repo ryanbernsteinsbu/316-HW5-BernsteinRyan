@@ -3,14 +3,16 @@ const DatabaseManager = require("../DatabaseManager.js")
 class PostgreDBM extends DatabaseManager{
     constructor(connection, UserModel, PlaylistModel){
         super(connection, UserModel, PlaylistModel);
+        this.UserModel = UserModel;
+        this.PlaylistModel = PlaylistModel;
     }
     createPlaylist(body, userId) {
         async function doCreatePlaylist(){
             try {
-                const user = await UserModel.findOne({ where: { _id: userId } })
+                const user = await this.UserModel.findOne({ where: { _id: userId } })
                 if (!user) throw new Error("User not found");
 
-                const playlist = new PlaylistModel.create(body);
+                const playlist = this.PlaylistModel.create(body);
 
                 return playlist;
             } catch (err) {
@@ -18,24 +20,24 @@ class PostgreDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doCreatePlaylist();
+        return doCreatePlaylist.bind(this)();
     }
     deletePlaylist(id) {
         async function doDelete() {
             try {
-                const deleted = await PlaylistModel.destroy({ where: { _id: id } });
+                const deleted = await this.PlaylistModel.destroy({ where: { _id: id } });
                 return deleted > 0;
             } catch (err) {
                 console.error("Error deleting playlist:", err.message);
                 return false;
             }
         }
-        return doDelete();
+        return doDelete.bind(this)();
     }    
    replacePlaylist(id, body) {
         async function doReplace() {
             try {
-                const list = await PlaylistModel.findByPk(id);
+                const list = await this.PlaylistModel.findByPk(id);
                 if (!list) return false;
 
                 list.name = body.playlist.name;
@@ -47,12 +49,12 @@ class PostgreDBM extends DatabaseManager{
                 return false;
             }
         }
-        return doReplace();
+        return doReplace.bind(this)();
     }    
     getPlaylistPairs(email) {
         async function doGetPairs() {
             try {
-                const playlists = await PlaylistModel.findAll({ where: { ownerEmail: email } });
+                const playlists = await this.PlaylistModel.findAll({ where: { ownerEmail: email } });
                 if (!playlists || !playlists.length){
                     return [];
                 }
@@ -72,12 +74,12 @@ class PostgreDBM extends DatabaseManager{
                 return [];
             }
         }
-        return doGetPairs();
+        return doGetPairs.bind(this)();
     }
     getPlaylist(id) {
         async function doGetPlaylist() {
             try {
-                const playlist = await PlaylistModel.findByPk(id);
+                const playlist = await this.PlaylistModel.findByPk(id);
                 if(playlist){
                     return playlist;
                 } else {
@@ -88,12 +90,12 @@ class PostgreDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doGetPlaylist();
+        return doGetPlaylist.bind(this)();
     }        
     getPlaylists(){
         async function doGetPlaylists() {
             try {
-                const playlists = await PlaylistModel.findAll();
+                const playlists = await this.PlaylistModel.findAll();
                 if(playlists){
                     return playlists;
                 } else {
@@ -104,11 +106,11 @@ class PostgreDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doGetPlaylists();
+        return doGetPlaylists.bind(this)();
     }
     createUser(body) {
         function getID(){
-            out = [...Array(24)].map(() => Math.floor(Math.random() * 16).toString(16)); //fill with random hex
+            const out = [...Array(24)].map(() => Math.floor(Math.random() * 16).toString(16)); //fill with random hex
             return out.join("");//join and return
         }
 
@@ -118,19 +120,19 @@ class PostgreDBM extends DatabaseManager{
                     _id: getID(),
                     ...body
                 };
-                const newUser = await UserModel.create(userData);
+                const newUser = await this.UserModel.create(userData);
                 return newUser;
             } catch (err) {
                 console.error("Error creating user:", err.message);
                 return null;
             }
         }
-        return doCreateUser();
+        return doCreateUser.bind(this)();
     }
     getUser(id) {
         async function doGetUser() {
             try {
-                const user = await UserModel.findOne({ where: { _id: id } });
+                const user = await this.UserModel.findOne({ where: { _id: id } });
                 if(user){
                     return user;
                 } else {
@@ -141,12 +143,12 @@ class PostgreDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doGetUser();
+        return doGetUser.bind(this)();
     }
     findUser(email) {
         async function doFindUser() {
             try {
-                const user = await UserModel.findOne({ where: { email: email} });
+                const user = await this.UserModel.findOne({ where: { email: email} });
                 if(user){
                     return user;
                 } else {
@@ -157,12 +159,12 @@ class PostgreDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doFindUser();
+        return doFindUser.bind(this)();
     }
     asyncFindUser(list) {
         async function doAsyncFindUser() {
             try {
-                const user = await UserModel.findByPk(list.ownerEmail);
+                const user = await this.UserModel.findByPk(list.ownerEmail);
                 if(user){
                     return user;
                 } else {
@@ -173,7 +175,7 @@ class PostgreDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doAsyncFindUser();
+        return doAsyncFindUser.bind(this)();
     }
 }
 

@@ -4,13 +4,15 @@ const DatabaseManager = require("../DatabaseManager.js")
 class MongoDBM extends DatabaseManager{
     constructor(connection, UserModel, PlaylistModel){
         super(connection, UserModel, PlaylistModel);
+        this.PlaylistModel = PlaylistModel;
+        this.UserModel = UserModel;
     }
     createPlaylist(body, userId) {
         async function doCreatePlaylist(){
             try {
-                const playlist = new PlaylistModel(body);
+                const playlist = new this.PlaylistModel(body);
 
-                const user = await UserModel.findById(userId);
+                const user = await this.UserModel.findById(userId);
                 if (!user) throw new Error("User not found");
 
                 user.playlists.push(playlist._id);
@@ -23,24 +25,24 @@ class MongoDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doCreatePlaylist();
+        return doCreatePlaylist.bind(this)();
     }
     deletePlaylist(id) {
         async function doDelete() {
             try {
-                const deleted = await PlaylistModel.findByIdAndDelete(id);
+                const deleted = await this.PlaylistModel.findByIdAndDelete(id);
                 return !!deleted; //convert to boolean
             } catch (err) {
                 console.error("Error deleting playlist:", err.message);
                 return false;
             }
         }
-        return doDelete();
+        return doDelete.bind(this)();
     }    
    replacePlaylist(id, body) {
         async function doReplace() {
             try {
-                const list = await PlaylistModel.findById(id);
+                const list = await this.PlaylistModel.findById(id);
                 if (!list) return false;
 
                 list.name = body.playlist.name;
@@ -52,12 +54,12 @@ class MongoDBM extends DatabaseManager{
                 return false;
             }
         }
-        return doReplace();
+        return doReplace.bind(this)();
     }    
     getPlaylistPairs(email) {
         async function doGetPairs() {
             try {
-                const playlists = await PlaylistModel.find({ ownerEmail: email });
+                const playlists = await this.PlaylistModel.find({ ownerEmail: email });
                 if (!playlists || !playlists.length){
                     return [];
                 }
@@ -77,12 +79,12 @@ class MongoDBM extends DatabaseManager{
                 return [];
             }
         }
-        return doGetPairs();
+        return doGetPairs.bind(this)();
     }
     getPlaylist(id) {
         async function doGetPlaylist() {
             try {
-                const playlist = await PlaylistModel.findById(id);
+                const playlist = await this.PlaylistModel.findById(id);
                 if(playlist){
                     return playlist;
                 } else {
@@ -93,12 +95,12 @@ class MongoDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doGetPlaylist();
+        return doGetPlaylist.bind(this)();
     }        
     getPlaylists(){
         async function doGetPlaylists() {
             try {
-                const playlists = await PlaylistModel.find({});
+                const playlists = await this.PlaylistModel.find({});
                 if(playlists){
                     return playlists;
                 } else {
@@ -109,12 +111,12 @@ class MongoDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doGetPlaylists();
+        return doGetPlaylists.bind(this)();
     }
     createUser(body) {
         async function doCreateUser() {
             try {
-                const newUser = new UserModel(body);
+                const newUser = new this.UserModel(body);
                 await newUser.save();
                 return newUser;
             } catch (err) {
@@ -122,12 +124,12 @@ class MongoDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doCreateUser();
+        return doCreateUser.bind(this)();
     }
     getUser(id) {
         async function doGetUser() {
             try {
-                const user = await UserModel.findById(id);
+                const user = await this.UserModel.findById(id);
                 if(user){
                     return user;
                 } else {
@@ -138,12 +140,12 @@ class MongoDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doGetUser();
+        return doGetUser.bind(this)();
     }
     findUser(email) {
         async function doFindUser() {
             try {
-                const user = await UserModel.findOne({ email: email });
+                const user = await this.UserModel.findOne({ email: email });
                 if(user){
                     return user;
                 } else {
@@ -154,12 +156,12 @@ class MongoDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doFindUser();
+        return doFindUser.bind(this)();
     }
     asyncFindUser(list) {
         async function doAsyncFindUser() {
             try {
-                const user = await UserModel.findOne({ email: list.ownerEmail });
+                const user = await this.UserModel.findOne({ email: list.ownerEmail });
                 console.log(user.firstName);
                 if(user){
                     return user;
@@ -171,7 +173,7 @@ class MongoDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doAsyncFindUser();
+        return doAsyncFindUser.bind(this)();
     }
 }
 
