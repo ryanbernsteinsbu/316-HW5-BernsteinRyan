@@ -6,11 +6,7 @@ const User = sequelize.define("User", {
         type: DataTypes.STRING(24),
         allowNull: false,
         unique: true},
-    firstName: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
-    lastName: {
+    userName: {
         type: DataTypes.STRING,
         allowNull: false,
     },
@@ -21,6 +17,9 @@ const User = sequelize.define("User", {
     passwordHash: {
         type: DataTypes.STRING,
         allowNull: false,
+    },
+    avatar: {
+        type: DataTypes.STRING,
     },
 });
 

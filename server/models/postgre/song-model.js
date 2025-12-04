@@ -1,16 +1,28 @@
 const { DataTypes } = require('sequelize');
 const { sequelize } = require('../../db/postgresql');
 
-const Playlist = sequelize.define("Playlist", {
+const Song = sequelize.define("Song", {
     _id: {
         type: DataTypes.STRING(24),
         primaryKey: true,
     },
-    name: {
+    title: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    listeners: {
+    artist: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    year: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    youTubeId: {
+        type: DataTypes.STRING,
+        allowNull: false,
+    },
+    listens: {
         type: DataTypes.INTEGER,
         defaultValue: 0,
     },
@@ -22,9 +34,9 @@ const Playlist = sequelize.define("Playlist", {
     indexes: [
       {
         unique: true,
-        fields: ["name", "ownerEmail"]
+        fields: ["title", "artist", "year"]
       }
     ]
 });
 
-module.exports = Playlist;
+module.exports = Song;

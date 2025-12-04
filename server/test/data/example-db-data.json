@@ -1,613 +1,266 @@
 {
-    "users": [
+  "users": [
+    {
+      "name": "AndyTran",
+      "email": "Andy@Tran.com"
+    },
+    {
+      "name": "SoraDeleon",
+      "email": "Sora@Deleon.com"
+    }
+  ],
+  "playlists": [
+      {
+      "name": "Old Songs",
+      "songs": [
         {
-            "firstName": "Joe",
-            "lastName": "Shmo",
-            "email": "joe@shmo.com",
-            "passwordHash": "$2a$10$dPEwsAVi1ojv2RfxxTpZjuKSAbep7zEKb5myegm.ATbQ4sJk4agGu",
-            "playlists": [
-                "68f524b611e0f3901871f164",
-                "68f526c1ec1ea2ad00a6fae0"
-            ]
+          "title": "I Want To Hold Your Hand",
+          "artist": "The Beatles",
+          "year": 1963,
+          "youTubeId": "v1HDt1tknTc"
         },
         {
-            "firstName": "Jane",
-            "lastName": "Doe",
-            "email": "jane@doe.com",
-            "passwordHash": "$2a$10$dPEwsAVi1ojv2RfxxTpZjuKSAbep7zEKb5myegm.ATbQ4sJk4agGu",
-            "playlists": [
-                "68f526c4ec1ea2ad00a6fae8"
-            ]
+          "title": "Let It Be",
+          "artist": "The Beatles",
+          "year": 1970,
+          "youTubeId": "QDYfEBY9NM4"
         },
         {
-            "firstName": "Ryan",
-            "lastName": "Bernstein",
-            "email": "ryan@bernstein.com",
-            "passwordHash": "$2a$10$iBShR65KB4ueqAGlPLT6ye1q2IES3A11KDkiPMyeTWR2fp6bGK90e",
-            "playlists": [
-                "69067f9bb7c8546779418dd1",
-                "69067f9bb7c8546779418de8",
-                "69067f9bb7c8546779418dfe"
-            ]
+          "title": "Mister Sandman",
+          "artist": "Chet Atkins",
+          "year": 1954,
+          "youTubeId": "dfsG1ukihl4"
+        },
+        {
+          "title": "Folsom Prison Blues",
+          "artist": "Johnny Cash",
+          "year": 1955,
+          "youTubeId": "AeZRYhLDLeU"
+        },
+        {
+          "title": "Smooth Criminal",
+          "artist": "Michael Jackson",
+          "year": 1987,
+          "youTubeId": "h_D3VFfhvs4"
+        },
+        {
+          "title": "Yellow Submarine",
+          "artist": "The Beatles",
+          "year": 1968,
+          "youTubeId": "j_JaDDcyIIU"
+        },
+        {
+          "title": "Here Comes The Sun",
+          "artist": "The Beatles",
+          "year": 1969,
+          "youTubeId": "GKdl-GCsNJ0"
+        },
+        {
+          "title": "Don't Stop Me Now",
+          "artist": "Queen",
+          "year": 1979,
+          "youTubeId": "HgzGwKwLmgM"
+        },
+        {
+          "title": "September",
+          "artist": "Earth, Wind & Fire",
+          "year": 1978,
+          "youTubeId": "Gs069dndIYk"
+        },
+        {
+          "title": "Thunderstruck",
+          "artist": "AC/DC",
+          "year": 1990,
+          "youTubeId": "v2AC41dglnM"
+        },
+        {
+          "title": "Back In Black",
+          "artist": "AC/DC",
+          "year": 1980,
+          "youTubeId": "pAgnJDJN4VA"
+        },
+        {
+          "title": "Bohemian Rhapsody",
+          "artist": "Queen",
+          "year": 1975,
+          "youTubeId": "fJ9rUzIMcZQ"
+        },
+        {
+          "title": "Seven Nation Army",
+          "artist": "The White Stripes",
+          "year": 2003,
+          "youTubeId": "0J2QdDbelmY"
+        },
+        {
+          "title": "Paint It, Black",
+          "artist": "The Rolling Stones",
+          "year": 1966,
+          "youTubeId": "O4irXQhgMqg"
+        },
+        {
+          "title": "Dream On",
+          "artist": "Aerosmith",
+          "year": 1973,
+          "youTubeId": "89dGC8de0CA"
+        },
+        {
+          "title": "Hotel California",
+          "artist": "Eagles",
+          "year": 1976,
+          "youTubeId": "dLl4PZtxia8"
+        },
+        {
+          "title": "Yesterday",
+          "artist": "The Beatles",
+          "year": 1965,
+          "youTubeId": "NrgmdOz227I"
+        },
+        {
+          "title": "Stairway to Heaven",
+          "artist": "Led Zeppelin",
+          "year": 1971,
+          "youTubeId": "X791IzOwt3Q"
+        },
+        {
+          "title": "Just The Two Of Us",
+          "artist": "Grover Washington, Jr. and Bill Withers",
+          "year": 1980,
+          "youTubeId": "6POZlJAZsok"
+        },
+        {
+          "title": "Don't Worry, Be Happy",
+          "artist": "Bobby McFerrin",
+          "year": 1988,
+          "youTubeId": "d-diB65scQU"
         }
-    ],
-    "playlists": [
+      ],
+      "ownerEmail": "Sora@Deleon.com"
+    },
+    {
+      "name": "My Favorite Songs",
+      "songs": [
         {
-            "_id": "68f524b611e0f3901871f164",
-            "ownerEmail": "joe@shmo.com",
-            "name": "Spacey",
-            "songs": [
-                {
-                    "title": "Across the Universe",
-                    "artist": "The Beatles",
-                    "year": 1969,
-                    "youTubeId": "90M60PzmxEE"
-                },
-                {
-                    "title": "Astronomy Domine",
-                    "artist": "Pink Floyd",
-                    "year": 1967,
-                    "youTubeId": "8UbNbor3OqQ"
-                },
-                {
-                    "title": "Black Hole Sun",
-                    "artist": "Soundgarden",
-                    "year": 1994,
-                    "youTubeId": "3mbBbFH9fAg"
-                },
-                {
-                    "title": "Brain Damage/Eclipse",
-                    "artist": "Pink Floyd",
-                    "year": 1973,
-                    "youTubeId": "g1OOQP1-wOE"
-                },
-                {
-                    "title": "Fly Me to the Moon",
-                    "artist": "Frank Sinatra",
-                    "year": 1964,
-                    "youTubeId": "ZEcqHA7dbwM"
-                },
-                {
-                    "title": "In the Meantime",
-                    "artist": "Spacehog",
-                    "year": 1994,
-                    "youTubeId": "PCsGRCf8T9Y"
-                },
-                {
-                    "title": "Major Tom",
-                    "artist": "Peter Shilling",
-                    "year": 1982,
-                    "youTubeId": "wO0A0XcWy88"
-                },
-                {
-                    "title": "Man on the Moon",
-                    "artist": "REM",
-                    "year": 1992,
-                    "youTubeId": "dLxpNiF0YKs"
-                },
-                {
-                    "title": "Rocket Man",
-                    "artist": "Elton John",
-                    "year": 1972,
-                    "youTubeId": "DtVBCG6ThDk"
-                },
-                {
-                    "title": "Set the Controls for the Heart of the Sun",
-                    "artist": "Pink Floyd",
-                    "year": 1968,
-                    "youTubeId": "qupVCTn5Dko"
-                },
-                {
-                    "title": "Space Oddity",
-                    "artist": "David Bowie",
-                    "year": 1969,
-                    "youTubeId": "iYYRH4apXDo"
-                },
-                {
-                    "title": "Space Song",
-                    "artist": "Beach House",
-                    "year": 2015,
-                    "youTubeId": "RBtlPT23PTM"
-                },
-                {
-                    "title": "Starless",
-                    "artist": "King Crimson",
-                    "year": 1974,
-                    "youTubeId": "OfR6_V91fG8"
-                },
-                {
-                    "title": "Starman",
-                    "artist": "David Bowie",
-                    "year": 1972,
-                    "youTubeId": "t365MuktYQs"
-                },
-                {
-                    "title": "Starship Trooper",
-                    "artist": "Yes",
-                    "year": 1971,
-                    "youTubeId": "xk4U8BembHM"
-                }
-            ]
+          "title": "I Want To Hold Your Hand",
+          "artist": "The Beatles",
+          "year": 1963,
+          "youTubeId": "v1HDt1tknTc"
         },
         {
-            "_id": "68f526c1ec1ea2ad00a6fae0",
-            "ownerEmail": "joe@shmo.com",
-            "name": "Any Colour You Like",
-            "songs": [
-                {
-                    "title": "99 Red Balloons",
-                    "artist": "Nena",
-                    "year": 1984,
-                    "youTubeId": "Fpu5a0Bl8eY"
-                },
-                {
-                    "title": "Big Blue Sun",
-                    "artist": "Adrian Belew",
-                    "year": 1986,
-                    "youTubeId": "DMkEmW2awQw"
-                },
-                {
-                    "title": "Black Dog",
-                    "artist": "Led Zeppelin",
-                    "year": 1971,
-                    "youTubeId": "2KPEHohJMuw"
-                },
-                {
-                    "title": "Golden Brown",
-                    "artist": "The Stranglers",
-                    "year": 1981,
-                    "youTubeId": "7KIHvuMl4Kk"
-                },
-                {
-                    "title": "Goodbye Yellow Brick Road",
-                    "artist": "Elton John",
-                    "year": 1973,
-                    "youTubeId": "wy709iNG6i8"
-                },
-                {
-                    "title": "Green is the Colour",
-                    "artist": "Pink Floyd",
-                    "year": 1969,
-                    "youTubeId": "4XeWngFZaa8"
-                },
-                {
-                    "title": "In the Court of the Crimson King",
-                    "artist": "King Crimson",
-                    "year": 1969,
-                    "youTubeId": "ukgraQ-xkp4"
-                },
-                {
-                    "title": "Orange Crush",
-                    "artist": "REM",
-                    "year": 1988,
-                    "youTubeId": "_mSmOcmk7uQ"
-                },
-                {
-                    "title": "Pink Houses",
-                    "artist": "John Mellancamp",
-                    "year": 1983,
-                    "youTubeId": "qOfkpu6749w"
-                },
-                {
-                    "title": "Purple Rain",
-                    "artist": "Prince",
-                    "year": 1984,
-                    "youTubeId": "TvnYmWpD_T8"
-                },
-                {
-                    "title": "White Lines",
-                    "artist": "Grandmaster Flash and the Furious Five",
-                    "year": 1983,
-                    "youTubeId": "DwRXI-y6M9o"
-                }
-            ]
+          "title": "Howling",
+          "artist": "Noah Kahan",
+          "year": 2021,
+          "youTubeId": "oAq9C7MGwAI"
         },
         {
-            "_id": "68f526c4ec1ea2ad00a6fae8",
-            "ownerEmail": "jane@doe.com",
-            "name": "Don't be Rude",
-            "songs": [
-                {
-                    "title": "A Message to You Rudy",
-                    "artist": "The Specials",
-                    "year": 1979,
-                    "youTubeId": "cntvEDbagAw"
-                },
-                {
-                    "title": "Rudie Can't Fail",
-                    "artist": "The Clash",
-                    "year": 1979,
-                    "youTubeId": "uEK9oK02D1M"
-                }
-            ]
+          "title": "Your Needs, My Needs",
+          "artist": "Noah Kahan",
+          "year": 2022,
+          "youTubeId": "CWfjMzuzEi8"
         },
         {
-            "_id": "69067f9bb7c8546779418dd1",
-            "ownerEmail": "ryan@bernstein.com",
-            "name": "esoterics",
-            "songs": [
-                {
-                    "title": "El darrer ofec del màrtir",
-                    "artist": "Amargor",
-                    "year": 2022,
-                    "youTubeId": "0gbzViD2Tes"
-                },
-                {
-                    "title": "Meshes of the Afternoon",
-                    "artist": "Teji Ito",
-                    "year": 1957,
-                    "youTubeId": "L8OxdYCLpIA"
-                },
-                {
-                    "title": "Revolution 9",
-                    "artist": "The Beatles",
-                    "year": 1968,
-                    "youTubeId": "SNdcFPjGsm8"
-                },
-                {
-                    "title": "A Day",
-                    "artist": "Clan of Xymox",
-                    "year": 1985,
-                    "youTubeId": "x3fsh8JefvM"
-                },
-                {
-                    "title": "1234",
-                    "artist": "clown core",
-                    "year": 2021,
-                    "youTubeId": "UsBFrUW_8e8"
-                },
-                {
-                    "title": "ROKE UP IN THE WRONG HOOD",
-                    "artist": "Infectious Jelqing",
-                    "year": 2024,
-                    "youTubeId": "livtaIR0PnA"
-                },
-                {
-                    "title": "Above The Burning Sand",
-                    "artist": "Coltaine",
-                    "year": 2025,
-                    "youTubeId": "HjBNXWaT8Lo"
-                },
-                {
-                    "title": "Varnish",
-                    "artist": "African-American Sound Recordings",
-                    "year": 2023,
-                    "youTubeId": "qXIBcCh3Zuw"
-                },
-                {
-                    "title": "cindy, the tv is leaking...",
-                    "artist": "concealer.",
-                    "year": 2024,
-                    "youTubeId": "YRaY_j_cKek"
-                },
-                {
-                    "title": "Longing Leans And Beckons",
-                    "artist": "Totem Skin",
-                    "year": 2015,
-                    "youTubeId": "EF169a0YFUc"
-                },
-                {
-                    "title": "La Traversée Du Pont Par Le Chameau",
-                    "artist": "Théo Girard",
-                    "year": 2017,
-                    "youTubeId": "4t_rpsWPEP8"
-                },
-                {
-                    "title": "Amargor",
-                    "artist": "Svdestada",
-                    "year": 2023,
-                    "youTubeId": "DQ-sz4N0QLc"
-                },
-                {
-                    "title": "Cathédrales de poussière",
-                    "artist": "Yarostan",
-                    "year": 2025,
-                    "youTubeId": "jXuGaLv340o"
-                },
-                {
-                    "title": "Clover",
-                    "artist": "Sleeper's Bell",
-                    "year": 2025,
-                    "youTubeId": "nessPFzkNiA"
-                },
-                {
-                    "title": "Star * 69",
-                    "artist": "Snõõper",
-                    "year": 2025,
-                    "youTubeId": "E8iiXVh1UUM"
-                },
-                {
-                    "title": "CAN'T BELIEVE",
-                    "artist": "GLOCKTEAU TWINS",
-                    "year": 2024,
-                    "youTubeId": "dwm48a4OjD4"
-                },
-                {
-                    "title": "Gambled House We're Wiping Fire (Psalm -1)",
-                    "artist": "Monde UFO",
-                    "year": 2025,
-                    "youTubeId": "Z5CPz7BWgKA"
-                },
-                {
-                    "title": "أكثر",
-                    "artist": "Burqa Boyz",
-                    "year": 2025,
-                    "youTubeId": "6OfjEHf8YDY"
-                },
-                {
-                    "title": "Stereoscenic",
-                    "artist": "Koen Daigaku",
-                    "year": 2022,
-                    "youTubeId": "NvWrDR-uiso"
-                },
-                {
-                    "title": "Легенда o...",
-                    "artist": "spopielony",
-                    "year": 2019,
-                    "youTubeId": "B4lP2AqVsTQ"
-                },
-                {
-                    "title": "Disguised in Scintillations",
-                    "artist": "Nuvolascura",
-                    "year": 2020,
-                    "youTubeId": "4TUpVFN_PS4"
-                }
-            ]
+          "title": "Godlight",
+          "artist": "Noah Kahan",
+          "year": 2021,
+          "youTubeId": "BoxCsOQV_mA"
         },
         {
-            "_id": "69067f9bb7c8546779418de8",
-            "ownerEmail": "ryan@bernstein.com",
-            "name": "faves",
-            "songs": [
-                {
-                    "title": "Semi-Charmed Life",
-                    "artist": "Third Eye Blind",
-                    "year": 1997,
-                    "youTubeId": "beINamVRGy4"
-                },
-                {
-                    "title": "Fluorescent Adolescent",
-                    "artist": "Arctic Monkeys",
-                    "year": 2007,
-                    "youTubeId": "ma9I9VBKPiw"
-                },
-                {
-                    "title": "Alcohol-Free",
-                    "artist": "TWICE",
-                    "year": 2021,
-                    "youTubeId": "XA2YEHn-A8Q"
-                },
-                {
-                    "title": "Falling For You",
-                    "artist": "Weezer",
-                    "year": 1996,
-                    "youTubeId": "hdrAsZ7ebuc"
-                },
-                {
-                    "title": "Gee",
-                    "artist": "Girls' Generation",
-                    "year": 2009,
-                    "youTubeId": "U7mPqycQ0tQ"
-                },
-                {
-                    "title": "Lean Beef Patty",
-                    "artist": "JPEGMAFIA;Danny Brown",
-                    "year": 2023,
-                    "youTubeId": "8YgxQlS2054"
-                },
-                {
-                    "title": "說愛你",
-                    "artist": "Jolin Tsai",
-                    "year": 2003,
-                    "youTubeId": "cOBQgUZnceg"
-                },
-                {
-                    "title": "Touch Me When We're Dancing",
-                    "artist": "Carpenters",
-                    "year": 1981,
-                    "youTubeId": "yMI6NTIyP-0"
-                },
-                {
-                    "title": "When You're Gone",
-                    "artist": "The Cranberries",
-                    "year": 1996,
-                    "youTubeId": "RUmdWdEgHgk"
-                },
-                {
-                    "title": "Summertime",
-                    "artist": "The Sundays",
-                    "year": 1997,
-                    "youTubeId": "Z778slDEsds"
-                },
-                {
-                    "title": "No Surprises",
-                    "artist": "Radiohead",
-                    "year": 1997,
-                    "youTubeId": "u5CVsCnxyXg"
-                },
-                {
-                    "title": "Lover, You Should've Come Over",
-                    "artist": "Jeff Buckley",
-                    "year": 1994,
-                    "youTubeId": "HxfE6PJmGS8"
-                },
-                {
-                    "title": "Sophomore Slump Or Comeback Of The Year",
-                    "artist": "Fall Out Boy",
-                    "year": 2005,
-                    "youTubeId": "Vg_AMXtiuok"
-                },
-                {
-                    "title": "Don't Stay",
-                    "artist": "Linkin Park",
-                    "year": 2003,
-                    "youTubeId": "oWfGOVWrueo"
-                },
-                {
-                    "title": "It's Still Rock and Roll to Me",
-                    "artist": "Billy Joel",
-                    "year": 1980,
-                    "youTubeId": "5eAQa4MOGkE"
-                },
-                {
-                    "title": "Everybody Wants To Rule The World",
-                    "artist": "Tears For Fears",
-                    "year": 1985,
-                    "youTubeId": "aGCdLKXNF3w"
-                },
-                {
-                    "title": "Santeria",
-                    "artist": "Sublime",
-                    "year": 1996,
-                    "youTubeId": "AEYN5w4T_aM"
-                },
-                {
-                    "title": "Can't Stop",
-                    "artist": "Red Hot Chili Peppers",
-                    "year": 2002,
-                    "youTubeId": "8DyziWtkfBw"
-                },
-                {
-                    "title": "I Will",
-                    "artist": "The Beatles",
-                    "year": 1968,
-                    "youTubeId": "p-abNGP1BK4"
-                },
-                {
-                    "title": "Ob-La-Di, Ob-La-Da",
-                    "artist": "The Beatles",
-                    "year": 1968,
-                    "youTubeId": "_J9NpHKrKMw"
-                }
-            ]
+          "title": "Forever",
+          "artist": "Noah Kahan",
+          "year": 2022,
+          "youTubeId": "MXmQq7AkXYE"
         },
         {
-            "_id": "69067f9bb7c8546779418dfe",
-            "ownerEmail": "ryan@bernstein.com",
-            "name": "eras",
-            "songs": [
-                {
-                    "title": "Be My Baby",
-                    "artist": "The Ronettes",
-                    "year": 1963,
-                    "youTubeId": "jSPpbOGnFgk"
-                },
-                {
-                    "title": "In My Room",
-                    "artist": "The Beach Boys",
-                    "year": 1964,
-                    "youTubeId": "EdrSbHU3-Ak"
-                },
-                {
-                    "title": "Paint It, Black",
-                    "artist": "The Rolling Stones",
-                    "year": 1966,
-                    "youTubeId": "8-AK67iz3gI"
-                },
-                {
-                    "title": "I Want You(She's So Heavy)",
-                    "artist": "The Beatles",
-                    "year": 1969,
-                    "youTubeId": "tAe2Q_LhY8g"
-                },
-                {
-                    "title": "Landslide",
-                    "artist": "Fleetwood Mac",
-                    "year": 1975,
-                    "youTubeId": "k4M53xndqiU"
-                },
-                {
-                    "title": "Born to Run",
-                    "artist": "Bruce Springsteen",
-                    "year": 1975,
-                    "youTubeId": "Wu4_zVxmufY"
-                },
-                {
-                    "title": "Let's Groove",
-                    "artist": "Earth, Wind & Fire",
-                    "year": 1981,
-                    "youTubeId": "Lrle0x_DHBM"
-                },
-                {
-                    "title": "Raspberry Beret",
-                    "artist": "Prince",
-                    "year": 1985,
-                    "youTubeId": "l7vRSu_wsNc"
-                },
-                {
-                    "title": "Don't Stop Me Now",
-                    "artist": "Queen",
-                    "year": 1979,
-                    "youTubeId": "HgzGwKwLmgM"
-                },
-                {
-                    "title": "Ziggy Stardust",
-                    "artist": "David Bowie",
-                    "year": 1972,
-                    "youTubeId": "na8xgu-KLAk"
-                },
-                {
-                    "title": "Friday I'm in Love",
-                    "artist": "The Cure",
-                    "year": 1992,
-                    "youTubeId": "mGgMZpGYiy8"
-                },
-                {
-                    "title": "1979",
-                    "artist": "The Smashing Pumpkins",
-                    "year": 1995,
-                    "youTubeId": "4aeETEoNfOg"
-                },
-                {
-                    "title": "Heart-Shaped Box",
-                    "artist": "Nirvana",
-                    "year": 1993,
-                    "youTubeId": "n6P0SitRwy8"
-                },
-                {
-                    "title": "Rollin' (Air Raid Vehicle)",
-                    "artist": "Limp Bizkit",
-                    "year": 2000,
-                    "youTubeId": "RYnFIRc0k6E"
-                },
-                {
-                    "title": "It's Gonna Be Me",
-                    "artist": "*NSYNC",
-                    "year": 2000,
-                    "youTubeId": "GQMlWwIXg3M"
-                },
-                {
-                    "title": "Hear You Me",
-                    "artist": "Jimmy Eat World",
-                    "year": 2001,
-                    "youTubeId": "fcmFH5OvdtA"
-                },
-                {
-                    "title": "I'm Like A Lawyer With The Way I'm Always Trying To Get You Off (Me & You)",
-                    "artist": "Fall Out Boy",
-                    "year": 2007,
-                    "youTubeId": "FAgbZdrWiN4"
-                },
-                {
-                    "title": "This Love",
-                    "artist": "Maroon 5",
-                    "year": 2002,
-                    "youTubeId": "XPpTgCho5ZA"
-                },
-                {
-                    "title": "jellyous",
-                    "artist": "ILLIT",
-                    "year": 2025,
-                    "youTubeId": "GkG60kISnfc"
-                },
-                {
-                    "title": "Forget Her",
-                    "artist": "Jeff Buckley",
-                    "year": 1994,
-                    "youTubeId": "HO0svGjVEP8"
-                }
-            ]
+          "title": "Understand",
+          "artist": "keshi",
+          "year": 2022,
+          "youTubeId": "6DcUnqZqTvI"
+        },
+        {
+          "title": "If We Were Vampires",
+          "artist": "Noah Kahan ft. Wesley Schultz",
+          "year": 2023,
+          "youTubeId": "246pND4SGXk"
+        },
+        {
+          "title": "Orange Juice",
+          "artist": "Alfie Jukes ft. Nell Mescal",
+          "year": 2024,
+          "youTubeId": "EboIgjNxoH0"
+        },
+        {
+          "title": "Maine",
+          "artist": "Noah Kahan",
+          "year": 2020,
+          "youTubeId": "NogPlgO7jng"
+        },
+        {
+          "title": "Jackie and Wilson",
+          "artist": "Hozier",
+          "year": 2014,
+          "youTubeId": "cSWqxbswQAY"
+        },
+        {
+          "title": "Unknown / Nth",
+          "artist": "Hozier",
+          "year": 2023,
+          "youTubeId": "LbztOHrFhK0"
+        },
+        {
+          "title": "Come Over",
+          "artist": "Noah Kahan",
+          "year": 2022,
+          "youTubeId": "Jm76aFLbgRc"
+        },
+        {
+          "title": "Orange Juice",
+          "artist": "Noah Kahan",
+          "year": 2022,
+          "youTubeId": "WtKTfzNcX9Y"
+        },
+        {
+          "title": "Strawberry Wine",
+          "artist": "Noah Kahan",
+          "year": 2022,
+          "youTubeId": "vFa8FOevDtA"
+        },
+        {
+          "title": "Only A Lifetime",
+          "artist": "FINNEAS",
+          "year": 2021,
+          "youTubeId": "b2KRc5ilYRc"
+        },
+        {
+          "title": "Keep Me",
+          "artist": "Novo Amor",
+          "year": 2020,
+          "youTubeId": "cD71pdObpwg"
+        },
+        {
+          "title": "Ceilings",
+          "artist": "Lizzy McAlpine",
+          "year": 2022,
+          "youTubeId": "SOxmA-nKfbU"
+        },
+        {
+          "title": "Anchor",
+          "artist": "Novo Amor",
+          "year": 2015,
+          "youTubeId": "OmKAn8rNbKg"
+        },
+        {
+          "title": "Anyway",
+          "artist": "Noah Kahan",
+          "year": 2020,
+          "youTubeId": "5HzpPl5a9EA"
+        },
+        {
+          "title": "From Eden",
+          "artist": "Hozier",
+          "year": 2014,
+          "youTubeId": "cI0wUoCLnLk"
         }
-
-    ]
+      ],
+      "ownerEmail": "Andy@Tran.com"
+    }
+  ]
 }
