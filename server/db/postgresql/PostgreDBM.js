@@ -8,7 +8,7 @@ class PostgreDBM extends DatabaseManager{
         this.SongModel = SongModel;
         this.PlaylistSongModel = PlaylistSongModel;
     }
-    
+    // Playlists     
     createPlaylist(body, userId) {
         async function doCreatePlaylist(){
             try {
@@ -28,6 +28,7 @@ class PostgreDBM extends DatabaseManager{
     deletePlaylist(id) {
         async function doDelete() {
             try {
+                await this.PlaylistSongModel.destroy({ where: { playlistId: id } });
                 const deleted = await this.PlaylistModel.destroy({ where: { _id: id } });
                 return deleted > 0;
             } catch (err) {
@@ -36,16 +37,29 @@ class PostgreDBM extends DatabaseManager{
             }
         }
         return doDelete.bind(this)();
-    }    
+   }    
    replacePlaylist(id, body) {
         async function doReplace() {
             try {
                 const list = await this.PlaylistModel.findByPk(id);
                 if (!list) return false;
-
+                
+                // update name
                 list.name = body.playlist.name;
-                list.songs = body.playlist.songs;
                 await list.save();
+
+                // delete songs
+                await this.PlaylistSongModel.destroy({ where: { playlistId: id } });
+
+                // add songs
+                for (let i = 0; i < body.songs.length; i++) {
+                    await this.PlaylistSongModel.create({
+                        playlistId: id,
+                        songId: body.songs[i]._id,
+                        position: i
+                    });
+                }
+
                 return true;
             } catch (err) {
                 console.error("Error replacing playlist:", err.message);
@@ -111,6 +125,7 @@ class PostgreDBM extends DatabaseManager{
         }
         return doGetPlaylists.bind(this)();
     }
+    //Users
     createUser(body) {
         function getID(){
             const out = [...Array(24)].map(() => Math.floor(Math.random() * 16).toString(16)); //fill with random hex
