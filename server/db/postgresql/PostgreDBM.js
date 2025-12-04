@@ -1,11 +1,14 @@
 const {UserModel, PlaylistModel} = require('../../models/postgre/associations.js')
 const DatabaseManager = require("../DatabaseManager.js")
 class PostgreDBM extends DatabaseManager{
-    constructor(connection, UserModel, PlaylistModel){
+    constructor(connection, UserModel, PlaylistModel, SongModel, PlaylistSongModel){
         super(connection, UserModel, PlaylistModel);
         this.UserModel = UserModel;
         this.PlaylistModel = PlaylistModel;
+        this.SongModel = SongModel;
+        this.PlaylistSongModel = PlaylistSongModel;
     }
+    
     createPlaylist(body, userId) {
         async function doCreatePlaylist(){
             try {

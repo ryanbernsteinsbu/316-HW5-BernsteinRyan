@@ -7,6 +7,17 @@ function getID(){
     out = [...Array(24)].map(() => Math.floor(Math.random() * 16).toString(16)); //fill with random hex
     return out.join("");//join and return
 }
+function isValidYear(year) {
+    const y = parseInt(year, 10);
+    return Number.isInteger(y) && y >= 1700 && y <= 2025;
+}
+function isValidYouTubeId(id) {
+    return /^[A-Za-z0-9_-]{11}$/.test(id);
+}
+function isValidUTF8(str) {
+    return !str.includes("�");
+}
+
 async function createUsers(data, Model) {
     for (const user of data) { //testData.users
         const newUser = await Model.create({
