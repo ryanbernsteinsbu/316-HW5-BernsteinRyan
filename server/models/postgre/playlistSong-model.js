@@ -18,7 +18,7 @@ const PlaylistSong = sequelize.define("PlaylistSong", {
             key: "_id"
         }
     },
-    listeners: {
+    position: {
         type: DataTypes.INTEGER,
     },
 });

@@ -12,6 +12,7 @@ Song.belongsTo(User, { foreignKey: 'ownerEmail', targetKey: 'email' });
 Playlist.belongsToMany(Song, {
   through: PlaylistSong,
   foreignKey: "playlistId",
+  as: "songs",
   otherKey: "songId"
 });
 Song.belongsToMany(Playlist, {

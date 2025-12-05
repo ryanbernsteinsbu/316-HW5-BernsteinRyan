@@ -12,8 +12,8 @@ if(process.env.DB_TYPE == "mongo"){
 } else {
     const db = require('./postgresql/index.js'); // TODO
     const PostgreDBM = require("./postgresql/PostgreDBM.js");
-    const { User: UserModel, Playlist: PlaylistModel } = require('../models/postgre/associations.js')
-    dbm = new PostgreDBM(db, UserModel, PlaylistModel);
+    const { User: UserModel, Playlist: PlaylistModel, Song: SongModel, PlaylistSong: PlaylistSongModel } = require('../models/postgre/associations.js')
+    dbm = new PostgreDBM(db, UserModel, PlaylistModel, SongModel, PlaylistSongModel);
 }
 
 module.exports = dbm;
