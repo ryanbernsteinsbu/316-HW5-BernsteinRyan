@@ -6,7 +6,7 @@ const User = sequelize.define("User", {
         type: DataTypes.STRING(24),
         allowNull: false,
         unique: true},
-    userName: {
+    username: {
         type: DataTypes.STRING,
         allowNull: false,
     },

@@ -39,23 +39,28 @@ class PostgreDBM extends DatabaseManager{
         return doDelete.bind(this)();
    }    
    replacePlaylist(id, body) {
+       console.log(JSON.stringify(body));
+       console.log(body.name);
         async function doReplace() {
             try {
                 const list = await this.PlaylistModel.findByPk(id);
                 if (!list) return false;
                 
                 // update name
-                list.name = body.playlist.name;
+                list.name = body.name;
                 await list.save();
 
-                // delete songs
+                if(!body.playlist.songs){
+                    return true;
+                }
+                //delete songs
                 await this.PlaylistSongModel.destroy({ where: { playlistId: id } });
 
                 // add songs
-                for (let i = 0; i < body.songs.length; i++) {
+                for (let i = 0; i < body.playlist.songs.length; i++) {
                     await this.PlaylistSongModel.create({
                         playlistId: id,
-                        songId: body.songs[i]._id,
+                        songId: body.playlist.songs[i]._id,
                         position: i
                     });
                 }

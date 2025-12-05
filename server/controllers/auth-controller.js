@@ -19,8 +19,7 @@ getLoggedIn = async (req, res) => {
         return res.status(200).json({
             loggedIn: true,
             user: {
-                firstName: loggedInUser.firstName,
-                lastName: loggedInUser.lastName,
+                username: loggedInUser.username,
                 email: loggedInUser.email
             }
         })
@@ -42,7 +41,11 @@ loginUser = async (req, res) => {
         }
 
         console.log(email);
-        const existingUser = await dbm.findUser(email);
+        const existingUserSql = await dbm.findUser(email);
+        const existingUser = existingUserSql.toJSON(); //change from SQL object 
+        console.log("===")
+        console.log(existingUser.username);
+        console.log("===")
         console.log("existingUser: " + existingUser);
         if (!existingUser) {
             return res
@@ -65,8 +68,7 @@ loginUser = async (req, res) => {
 
         // LOGIN THE USER
         const token = auth.signToken(existingUser._id);
-        console.log(token);
-
+        // console.log(token);
         res.cookie("token", token, {
             httpOnly: true,
             secure: true,
@@ -74,8 +76,7 @@ loginUser = async (req, res) => {
         }).status(200).json({
             success: true,
             user: {
-                firstName: existingUser.firstName,
-                lastName: existingUser.lastName,  
+                username: existingUser.username,  
                 email: existingUser.email              
             }
         })
@@ -98,9 +99,9 @@ logoutUser = async (req, res) => {
 registerUser = async (req, res) => {
     console.log("REGISTERING USER IN BACKEND");
     try {
-        const { firstName, lastName, email, password, passwordVerify } = req.body;
-        console.log("create user: " + firstName + " " + lastName + " " + email + " " + password + " " + passwordVerify);
-        if (!firstName || !lastName || !email || !password || !passwordVerify) {
+        const { username, email, password, passwordVerify } = req.body;
+        console.log("create user: " + username + " " + email + " " + password + " " + passwordVerify);
+        if (!username || !email || !password || !passwordVerify) {
             return res
                 .status(400)
                 .json({ errorMessage: "Please enter all required fields." });
@@ -158,8 +159,7 @@ registerUser = async (req, res) => {
         }).status(200).json({
             success: true,
             user: {
-                firstName: savedUser.firstName,
-                lastName: savedUser.lastName,  
+                username: savedUser.username,  
                 email: savedUser.email              
             }
         })

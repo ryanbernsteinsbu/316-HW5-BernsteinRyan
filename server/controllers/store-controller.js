@@ -163,9 +163,8 @@ updatePlaylist = async (req, res) => {
         })
     }
     try{
-        const body = req.body
+        const body = req.body.playlist;
         console.log("updatePlaylist: " + JSON.stringify(body));
-        console.log("req.body.name: " + req.body.name);
         if (!body) {
             return res.status(400).json({
                 success: false,
@@ -192,7 +191,8 @@ updatePlaylist = async (req, res) => {
             return res.status(400).json({ success: false, description: "authentication error" });
         } else {
             console.log("correct user!");
-            const updated = await dbm.replacePlaylist(list._id, req.body);
+            const updated = await dbm.replacePlaylist(list._id, body);
+            console.log(updated);
             if(updated){
                 return res.status(200).json({
                     success: true,

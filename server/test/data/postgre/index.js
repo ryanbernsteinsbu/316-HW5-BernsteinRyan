@@ -22,7 +22,7 @@ async function createUsers(data, Model) {
     for (const user of data) { //testData.users
         const newUser = await Model.create({
             _id: getID(),
-            userName: user.name,
+            username: user.name,
             email: user.email,
             passwordHash: aaaaaaaa,
         });
