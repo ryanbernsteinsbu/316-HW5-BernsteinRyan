@@ -43,24 +43,26 @@ class PostgreDBM extends DatabaseManager{
        console.log(body.name);
         async function doReplace() {
             try {
+                const realBody = (body.name) ? body : body.playlist; //DO NOT REMOVE: no idea why this is needed I think its a java bug 
+                console.log(realBody.name);
                 const list = await this.PlaylistModel.findByPk(id);
                 if (!list) return false;
                 
                 // update name
-                list.name = body.name;
+                list.name = realBody.name;
                 await list.save();
 
-                if(!body.playlist.songs){
+                if(!realBody.songs){
                     return true;
                 }
                 //delete songs
                 await this.PlaylistSongModel.destroy({ where: { playlistId: id } });
 
                 // add songs
-                for (let i = 0; i < body.playlist.songs.length; i++) {
+                for (let i = 0; i < realBody.songs.length; i++) {
                     await this.PlaylistSongModel.create({
                         playlistId: id,
-                        songId: body.playlist.songs[i]._id,
+                        songId: realBody.songs[i]._id,
                         position: i
                     });
                 }
