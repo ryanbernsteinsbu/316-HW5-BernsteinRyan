@@ -90,9 +90,16 @@ class PostgreDBM extends DatabaseManager{
                 let pairs = [];
                 for (let key in playlists) {
                     let list = playlists[key];
+                    const sampleSongs = await list.getSongs({
+                        joinTableAttributes: ["position"],
+                        order: [[this.connection.sequelize.literal('"PlaylistSong"."position"'), "ASC"]],
+                        limit: 3
+                    });
                     let pair = {
                         _id: list._id,
-                        name: list.name
+                        name: list.name,
+                        ownerEmail: list.ownerEmail,
+                        sample: sampleSongs.map(song => song.toJSON()), //place the list of 3 songs here
                     };
                     pairs.push(pair);
                 }
@@ -116,10 +123,7 @@ class PostgreDBM extends DatabaseManager{
                             through: { attributes: ["position"] }
                         }
                     ],
-                    
                     order: [[this.connection.sequelize.literal('"songs->PlaylistSong"."position"'), 'ASC']]
-
-                    // order: [[{ model: this.SongModel, as: "songs" }, 'PlaylistSong', 'position', 'ASC']]
                 });
                 return playlist ? playlist.toJSON() : null;
             } catch (err) {

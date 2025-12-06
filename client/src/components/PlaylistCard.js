@@ -3,10 +3,13 @@ import { GlobalStoreContext } from '../store'
 import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ExpandLessIcon from '@mui/icons-material/ExpandLess';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
-
+import Typography from '@mui/material/Typography';
+import Divider from '@mui/material/Divider';
 /*
     This is a card in our list of top 5 lists. It lets select
     a list for editing and it has controls for changing its 
@@ -18,6 +21,7 @@ function PlaylistCard(props) {
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
+    const [expanded, setExpanded] = useState(false);
     const { idNamePair } = props;
 
     function handleLoadList(event, id) {
@@ -64,8 +68,12 @@ function PlaylistCard(props) {
     function handleUpdateText(event) {
         setText(event.target.value);
     }
-
+    function toggleExpand(event) {
+        event.stopPropagation();
+        setExpanded(!expanded);
+    }
     let cardElement =
+ <Box sx={{ width: "100%" }}>
         <ListItem
             id={idNamePair._id}
             key={idNamePair._id}
@@ -79,18 +87,40 @@ function PlaylistCard(props) {
             <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <EditIcon style={{fontSize:'48pt'}} />
+                    <EditIcon style={{fontSize:'36pt'}} />
                 </IconButton>
             </Box>
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
                     }} aria-label='delete'>
-                    <DeleteIcon style={{fontSize:'48pt'}} />
+                    <DeleteIcon style={{fontSize:'36pt'}} />
+                </IconButton>
+            </Box>
+            <Box sx={{ p: 1 }}>
+                <IconButton onClick={(event) => {
+                        toggleExpand(event);
+                    }} aria-label='expand'>
+                    {expanded ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
                 </IconButton>
             </Box>
         </ListItem>
-
+        {expanded && (
+            <Box sx={{
+                bgcolor: "#f5f5f5",
+                    mx: 4,
+                    mt: 1,
+                    p: 2,
+                    borderRadius: "15px"
+            }}>
+            {idNamePair.sample.map((song, index) => (
+                <Typography key={index}>
+                    {index + 1}. {song.title} by {song.artist} ({song.year})
+                </Typography>
+            ))}
+            </Box>
+        )}
+    </Box>
     if (editActive) {
         cardElement =
             <TextField

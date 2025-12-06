@@ -244,7 +244,7 @@ function GlobalStoreContextProvider(props) {
                 let playlist = response.data.playlist;
                 playlist.name = newName;
                 async function updateList(playlist) {
-                    response = await storeRequestSender.updatePlaylistById(playlist._id, playlist);
+                    response = await storeRequestSender.updatePlaylistById(playlist._id, {playlist});
                     if (response.data.success) {
                         async function getListPairs(playlist) {
                             response = await storeRequestSender.getPlaylistPairs();
