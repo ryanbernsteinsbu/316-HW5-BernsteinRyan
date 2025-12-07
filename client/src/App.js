@@ -6,10 +6,13 @@ import { GlobalStoreContextProvider } from './store'
 import {
     AppBanner,
     HomeWrapper,
+    SplashScreen,
+    PlaylistScreen,
     LoginScreen,
     RegisterScreen,
     Statusbar,
-    WorkspaceScreen
+    WorkspaceScreen,
+    SongCatalog
 } from './components'
 /*
   This is the entry-point for our application. Notice that we
@@ -24,10 +27,12 @@ const App = () => {
                 <GlobalStoreContextProvider>              
                     <AppBanner />
                     <Switch>
-                        <Route path="/" exact component={HomeWrapper} />
+                        <Route path="/" exact component={SplashScreen} />
+                        <Route path="/playlists" exact component={PlaylistScreen} />
                         <Route path="/login/" exact component={LoginScreen} />
                         <Route path="/register/" exact component={RegisterScreen} />
                         <Route path="/playlist/:id" exact component={WorkspaceScreen} />
+                        <Route path="/songs" exact component={SongCatalog} />
                     </Switch>
                     <Statusbar />
                 </GlobalStoreContextProvider>

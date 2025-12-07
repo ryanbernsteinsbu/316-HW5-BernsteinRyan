@@ -1,8 +1,19 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import ActionButton from './ActionButton.js';
+import { useHistory } from 'react-router-dom'
 
 export default function SplashScreen() {
+    const history = useHistory();
+    function handleLogin(event){
+        history.push("/login/");
+    }
+    function handleGuest(event){
+        history.push("/playlists/");
+    }
+    function handleRegister(event){
+        history.push("/register/");
+    }
     return (
         <div id="splash-screen">
             <div>
@@ -25,15 +36,15 @@ export default function SplashScreen() {
                   justifyContent: "center",
                 }}
               >
-                <ActionButton>
+                <ActionButton onClick={handleGuest}>
                     Continue as Guest
                 </ActionButton>
 
-                <ActionButton>
+                <ActionButton onClick={handleLogin}>
                     Login
                 </ActionButton>
 
-                <ActionButton>
+                <ActionButton onClick={handleRegister}>
                     Create Account
                 </ActionButton>
                 </Box>

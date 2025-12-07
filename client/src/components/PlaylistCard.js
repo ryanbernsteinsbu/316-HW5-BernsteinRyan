@@ -1,15 +1,17 @@
-import { useContext, useState } from 'react'
+import { useContext, useState, useEffect } from 'react'
 import { GlobalStoreContext } from '../store'
+import AuthContext from '../auth';
 import Box from '@mui/material/Box';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpandLessIcon from '@mui/icons-material/ExpandLess';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import IconButton from '@mui/material/IconButton';
 import ListItem from '@mui/material/ListItem';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 /*
     This is a card in our list of top 5 lists. It lets select
     a list for editing and it has controls for changing its 
@@ -18,11 +20,16 @@ import Divider from '@mui/material/Divider';
     @author McKilla Gorilla
 */
 function PlaylistCard(props) {
+    const { auth } = useContext(AuthContext);
     const { store } = useContext(GlobalStoreContext);
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const [expanded, setExpanded] = useState(false);
     const { idNamePair } = props;
+
+    useEffect(() => {
+        auth.getLoggedIn();
+    }, []);
 
     function handleLoadList(event, id) {
         console.log("handleLoadList for " + id);
@@ -78,25 +85,44 @@ function PlaylistCard(props) {
             id={idNamePair._id}
             key={idNamePair._id}
             sx={{borderRadius:"25px", p: "10px", bgcolor: '#8000F00F', marginTop: '15px', display: 'flex', /*p: 1*/ }}
-            style={{transform:"translate(1%,0%)", width: '98%', fontSize: '48pt' }}
+            style={{transform:"translate(1%,0%)", width: '98%', fontSize: '24pt' }}
             button
             onClick={(event) => {
                 handleLoadList(event, idNamePair._id)
             }}
         >
-            <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name}</Box>
+        <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name} [{idNamePair.ownerName}]</Box>
+        {true && (
             <Box sx={{ p: 1 }}>
-                <IconButton onClick={handleToggleEdit} aria-label='edit'>
-                    <EditIcon style={{fontSize:'36pt'}} />
-                </IconButton>
+            <IconButton onClick={handleToggleEdit} aria-label='play'>
+            <PlayArrowIcon style={{fontSize:'24pt'}} />
+            </IconButton>
             </Box>
+        )}
+        {auth.loggedIn && (
+            <Box sx={{ p: 1 }}>
+            <IconButton onClick={handleToggleEdit} aria-label='copy'>
+            <ContentCopyIcon style={{fontSize:'24pt'}} />
+            </IconButton>
+            </Box>
+        )}
+        {(auth.loggedIn && auth.user.email === idNamePair.ownerEmail) && (
+            <Box sx={{ p: 1 }}>
+            <IconButton onClick={handleToggleEdit} aria-label='edit'>
+            <EditIcon style={{fontSize:'24pt'}} />
+            </IconButton>
+            </Box>
+        )}
+        {(auth.loggedIn && auth.user.email === idNamePair.ownerEmail) && (
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
                         handleDeleteList(event, idNamePair._id)
                     }} aria-label='delete'>
-                    <DeleteIcon style={{fontSize:'36pt'}} />
+                    <DeleteIcon style={{fontSize:'24pt'}} />
                 </IconButton>
             </Box>
+        )}
+
             <Box sx={{ p: 1 }}>
                 <IconButton onClick={(event) => {
                         toggleExpand(event);
@@ -105,7 +131,7 @@ function PlaylistCard(props) {
                 </IconButton>
             </Box>
         </ListItem>
-        {expanded && (
+        {expanded && idNamePair.sample?.length >0 && (
             <Box sx={{
                 bgcolor: "#f5f5f5",
                     mx: 4,

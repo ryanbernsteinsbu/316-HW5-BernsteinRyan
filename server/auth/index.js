@@ -1,6 +1,24 @@
 const jwt = require("jsonwebtoken")
 
 function authManager() {
+    optionalVerify = (req, res, next) => {
+        try {
+            const token = req.cookies.token;
+
+            if (!token) {
+                req.userId = null;
+                return next();
+            }
+
+            const verified = jwt.verify(token, process.env.JWT_SECRET);
+            req.userId = verified.userId;
+
+            next();
+        } catch (err) {
+            req.userId = null;
+            next();
+        }
+    }
     verify = (req, res, next) => {
         // console.log("req: " + req);
         // console.log("next: " + next);

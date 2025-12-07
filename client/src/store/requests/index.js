@@ -42,13 +42,29 @@ export const updatePlaylistById = (id, playlist) => {
         playlist : playlist
     })
 }
+export const createSong = (songData) => {
+    return api.post(`/song/`, songData);
+};
 
+export const deleteSongById = (id) => api.delete(`/song/${id}`);
+export const getSongById = (id) => api.get(`/song/${id}`);
+export const getSongs = (query) => api.post(`/songs/`, query);
+export const replaceSongById = (id, songData) => {
+    return api.put(`/song/${id}`, { song: songData });
+};
+export const queryPlaylistPairs = (query) => api.post(`/queryplaylistpairs`, query);
 const apis = {
     createPlaylist,
     deletePlaylistById,
     getPlaylistById,
     getPlaylistPairs,
-    updatePlaylistById
+    updatePlaylistById,
+    createSong,
+    deleteSongById,
+    getSongById,
+    getSongs,
+    replaceSongById,
+    queryPlaylistPairs,
 }
 
 export default apis

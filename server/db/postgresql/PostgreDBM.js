@@ -95,15 +95,116 @@ class PostgreDBM extends DatabaseManager{
                         order: [[this.connection.sequelize.literal('"PlaylistSong"."position"'), "ASC"]],
                         limit: 3
                     });
+                    const user = await this.UserModel.findByPk(list.ownerEmail);
                     let pair = {
                         _id: list._id,
                         name: list.name,
                         ownerEmail: list.ownerEmail,
+                        ownerName: user.toJSON().username,
                         sample: sampleSongs.map(song => song.toJSON()), //place the list of 3 songs here
                     };
                     pairs.push(pair);
                 }
                 return pairs;
+
+            } catch (err) {
+                console.error("Error getting playlist pairs:", err.message);
+                return [];
+            }
+        }
+        return doGetPairs.bind(this)();
+    }
+    queryPlaylistPairs(body) {
+        async function doGetPairs() {
+            try {
+                // console.log(body)
+                const {
+                    playlistName,
+                    userName,
+                    songTitle,
+                    songArtist,
+                    songYear,
+                    sortOrder
+                } = body;
+                const { Op } = require('sequelize');
+                const filteredSongs = []
+                if (songYear || songArtist || songTitle){
+                    filteredSongs = await this.SongModel.findAll({
+                        where: {
+                            ...(songTitle ? {title: { [Op.like]: `%${songTitle}%`}} : {}),
+                            ...(songArtist ? {artist: { [Op.like]: `%${songArtist}%`}} : {}),
+                            ...(songYear ? {year: Number(songYear)} : {})
+                        },
+                        attributes: ['_id'] 
+                    });
+                } 
+                const songIds = filteredSongs.map(s => s._id);
+                //create a list of all valid song songIds
+                //if no results return []
+                if((songYear || songArtist || songTitle) && songIds.length == 0){
+                    return [];
+                }
+
+                // get email
+                const userEmail = userName ? await this.resolveUserEmail(userName) : null;
+                //generate playlist where conditions
+                const playlistWhere = {
+                    ...(playlistName ? { name: { [Op.like]: `%${playlistName}%` } } : {}),
+                    ...(userEmail && userName ? { ownerEmail:  userEmail} : {}),
+                };
+                console.log("playlistWhere: " + JSON.stringify(playlistWhere))
+                const playlists = await this.PlaylistModel.findAll(
+                    { where: { ...playlistWhere } }
+                );
+                if (!playlists || !playlists.length){
+                    return [];
+                }
+
+                let matchingPlaylists = playlists;
+
+                if (songIds.length > 0) {
+                    matchingPlaylists = [];
+
+                    for (const playlist of playlists) {
+                        const songsInPlaylist = await playlist.getSongs({
+                            joinTableAttributes: [],
+                            attributes: ['_id']
+                        });
+
+                        const playlistSongIds = songsInPlaylist.map(s => s._id);
+
+                        // Check intersection
+                        const intersects = playlistSongIds.some(id => songIds.includes(id));
+
+                        if (intersects) {
+                            matchingPlaylists.push(playlist);
+                        }
+                    }
+                }
+
+                if (!matchingPlaylists.length) return [];
+
+                let pairs = [];
+
+                for (let key in matchingPlaylists) {
+                    let list = matchingPlaylists[key];
+                    const sampleSongs = await list.getSongs({
+                        joinTableAttributes: [],
+                        order: [[this.connection.sequelize.literal('"PlaylistSong"."position"'), "asc"]],
+                        limit: 3
+                    });
+                    const user = await this.UserModel.findByPk(list.ownerEmail);
+                    let pair = {
+                        _id: list._id,
+                        name: list.name,
+                        ownerEmail: list.ownerEmail,
+                        ownerName: user.toJSON().username,
+                        sample: sampleSongs.map(song => song.toJSON()), //place the list of 3 songs here
+                    };
+                    pairs.push(pair);
+                }
+                return pairs;
+                // return [1,2,3,3];
 
             } catch (err) {
                 console.error("Error getting playlist pairs:", err.message);
@@ -187,6 +288,21 @@ class PostgreDBM extends DatabaseManager{
         }
         return doGetUser.bind(this)();
     }
+    async resolveUserEmail(username) {
+        try {
+            if (!username) return null;
+
+            const user = await this.UserModel.findOne({
+                where: { username: username }
+            });
+
+            return user ? user.email : null;
+
+        } catch (err) {
+            console.error("Error resolving email:", err.message);
+            return null;
+        }
+    }
     findUser(email) {
         async function doFindUser() {
             try {
@@ -244,7 +360,7 @@ class PostgreDBM extends DatabaseManager{
                 return null;
             }
         }
-        return doCreatePlaylist.bind(this)();
+        return doCreateSong.bind(this)();
     }
     deleteSong(id) {
         async function doDelete() {
@@ -262,12 +378,11 @@ class PostgreDBM extends DatabaseManager{
    replaceSong(id, body) {
         async function doReplace() {
             try {
-                const realBody = (body.name) ? body : body.song; //DO NOT REMOVE: no idea why this is needed I think its a java bug 
+                const realBody = (body.title) ? body : body.song; //DO NOT REMOVE: no idea why this is needed I think its a java bug 
                 const song = await this.SongModel.findByPk(id);
                 if (!song) return false;
                 
                 // update song
-                song.ownerEmail = realBody.ownerEmail;
                 song.title = realBody.title;
                 song.artist = realBody.artist;
                 song.year = realBody.year;
@@ -280,6 +395,44 @@ class PostgreDBM extends DatabaseManager{
             }
         }
         return doReplace.bind(this)();
+    }
+    getSong(id){
+        async function doGet(){
+            try{
+                const song = await this.SongModel.findByPk(id);
+                return song ? song : null;
+            } catch (err) {
+                console.error("Error retrieving song:", err.message);
+                return false;
+            }
+
+        }
+        return doGet.bind(this)();
+    }
+    getSongs(body){
+        async function doGet(){
+            try{
+                console.log(body);
+                const {songTitle, songArtist, songYear, sortOrder} = body;
+                const { Op } = require('sequelize');
+
+                const where = {
+                    ...(songTitle ? {title:{[Op.like]: `%${songTitle}%`}}: {}),
+                    ...(songArtist ? {artist:{[Op.like]: `%${songArtist}%`}}: {}),
+                    ...(songYear ? { year: Number(songYear) } : {})
+                }
+                const order = {
+
+                }
+                const songs = await this.SongModel.findAll({where});
+                return songs ? songs : null;
+            } catch (err) {
+                console.error("Error retrieving songs:", err.message);
+                return false;
+            }
+
+        }
+        return doGet.bind(this)();
     }
 }
 

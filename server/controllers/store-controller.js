@@ -79,11 +79,11 @@ deletePlaylist = async (req, res) => {
     }
 }
 getPlaylistById = async (req, res) => {
-    if(auth.verifyUser(req) === null){
-        return res.status(400).json({
-            errorMessage: 'UNAUTHORIZED'
-        })
-    }
+    // if(auth.verifyUser(req) === null){
+    //     return res.status(400).json({
+    //         errorMessage: 'UNAUTHORIZED'
+    //     })
+    // }
     try {
         console.log("Find Playlist with id: " + JSON.stringify(req.params.id));
         const list = await dbm.getPlaylist(req.params.id);
@@ -99,13 +99,7 @@ getPlaylistById = async (req, res) => {
             })
         }
 
-        if (user._id == req.userId) { //verify user
-            console.log("correct user!");
-            return res.status(200).json({ success: true, playlist: list })
-        } else {
-            console.log("incorrect user!");
-            return res.status(400).json({ success: false, description: "authentication error" });
-        }
+        return res.status(200).json({ success: true, playlist: list })
     } catch(err) {
         console.error("getPlaylistById error:", err);
         return res.status(500).json({ errorMessage: 'Internal server error' });
@@ -138,12 +132,34 @@ getPlaylistPairs = async (req, res) => {
         return res.status(500).json({ errorMessage: 'Internal server error' });
     }
 }
-getPlaylists = async (req, res) => {
-    if(auth.verifyUser(req) === null){
-        return res.status(400).json({
-            errorMessage: 'UNAUTHORIZED'
-        })
+queryPlaylistPairs = async (req, res) => {
+    // if(auth.verifyUser(req) === null){
+    //     return res.status(400).json({
+    //         errorMessage: 'UNAUTHORIZED'
+    //     })
+    // }
+    try {
+        console.log("queryPlaylistPairs");
+        const playlistPairs = await dbm.queryPlaylistPairs(req.body);
+        console.log(playlistPairs);
+        if(playlistPairs){
+            return res.status(200).json({ success: true, idNamePairs: playlistPairs})
+        } else {
+            return res
+                .status(404)
+                .json({success:false, error: "Playlists not found"})
+        }
+    } catch(err) {
+        console.error("queryPlaylistPairs error:", err);
+        return res.status(500).json({ errorMessage: 'Internal server error' });
     }
+}
+getPlaylists = async (req, res) => {
+    // if(auth.verifyUser(req) === null){
+    //     return res.status(400).json({
+    //         errorMessage: 'UNAUTHORIZED'
+    //     })
+    // }
     try{
         const playlists = await dbm.getPlaylists()
         if(!playlists){
@@ -212,11 +228,188 @@ updatePlaylist = async (req, res) => {
         return res.status(500).json({ errorMessage: 'Internal server error' });
     }
 }
+
+createSong = async (req, res) => {
+    if(auth.verifyUser(req) === null){
+        return res.status(400).json({
+            errorMessage: 'UNAUTHORIZED'
+        });
+    }
+
+    const body = req.body;
+    console.log("createSong body: " + JSON.stringify(body));
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide a song',
+        });
+    }
+
+    try {
+        const newSong = await dbm.createSong(body, req.userId);
+        if (newSong) {
+            return res.status(201).json({ song: newSong });
+        } else {
+            return res.status(400).json({ errorMessage: 'Song not created!' });
+        }
+    } catch (err) {
+        console.error("createSong error:", err);
+        return res.status(500).json({ errorMessage: 'Internal server error' });
+    }
+}
+
+deleteSong = async (req, res) => {
+    if(auth.verifyUser(req) === null){
+        return res.status(400).json({
+            errorMessage: 'UNAUTHORIZED'
+        });
+    }
+
+    console.log("delete Song with id: " + JSON.stringify(req.params.id));
+
+    try {
+        const song = await dbm.getSong(req.params.id);
+        if(!song){
+            return res.status(404).json({
+                errorMessage: 'Song not found!',
+            });
+        }
+
+        const user = await dbm.findUser(song.ownerEmail);
+        if(!user){
+            return res.status(404).json({
+                errorMessage: 'User not found!',
+            });
+        }
+
+        if (user._id === req.userId) {
+            const deleted = await dbm.deleteSong(song._id);
+            if(deleted){
+                return res.status(200).json({});
+            } else {
+                return res.status(400).json({ 
+                    errorMessage: "Delete error" 
+                });
+            }
+        } else {
+            return res.status(400).json({ 
+                errorMessage: "Authentication error" 
+            });
+        }
+    } catch(err) {
+        console.error("deleteSong error:", err);
+        return res.status(500).json({ errorMessage: 'Internal server error' });
+    }
+}
+replaceSong = async (req, res) => {
+    if(auth.verifyUser(req) === null){
+        return res.status(400).json({
+            errorMessage: 'UNAUTHORIZED'
+        });
+    }
+
+    const body = req.body.song;
+    console.log("replaceSong body: " + JSON.stringify(body));
+    if (!body) {
+        return res.status(400).json({
+            success: false,
+            error: 'You must provide a song to update',
+        });
+    }
+
+    try {
+        const song = await dbm.getSong(req.params.id);
+        if(!song){
+            return res.status(404).json({
+                errorMessage: 'Song not found!',
+            });
+        }
+
+        const user = await dbm.findUser(song.ownerEmail);
+        if(!user){
+            return res.status(404).json({
+                errorMessage: 'User not found!',
+            });
+        }
+
+        if (user._id !== req.userId) {
+            return res.status(400).json({ success: false, description: "Authentication error" });
+        }
+
+        const updated = await dbm.replaceSong(song._id, body);
+        if(updated){
+            return res.status(200).json({
+                success: true,
+                id: song._id,
+                message: 'Song updated!',
+            });
+        } else {
+            return res.status(400).json({
+                success: false,
+                id: song._id,
+                message: 'Song failed to update',
+            });
+        }
+    } catch(err){
+        console.error("replaceSong error:", err);
+        return res.status(500).json({ errorMessage: 'Internal server error' });
+    }
+}
+
+getSong = async (req, res) => {
+
+    try {
+        const song = await dbm.getSong(req.params.id);
+        if(!song){
+            return res.status(404).json({
+                errorMessage: 'Song not found!',
+            });
+        }
+
+        const user = await dbm.findUser(song.ownerEmail);
+        if(!user){
+            return res.status(404).json({
+                errorMessage: 'User not found!',
+            });
+        }
+
+        return res.status(200).json({ success: true, song: song });
+    } catch(err){
+        console.error("getSong error:", err);
+        return res.status(500).json({ errorMessage: 'Internal server error' });
+    }
+}
+
+getSongs = async (req, res) => {
+
+    try {
+        // console.log(req.body);
+        const songs = await dbm.getSongs(req.body);
+        if(!songs){
+            return res.status(404).json({
+                errorMessage: 'No songs found',
+            });
+        }
+
+        return res.status(200).json({ success: true, songs: songs });
+    } catch(err){
+        console.error("getSongs error:", err);
+        return res.status(500).json({ errorMessage: 'Internal server error' });
+    }
+}
+
+
 module.exports = {
     createPlaylist,
     deletePlaylist,
     getPlaylistById,
     getPlaylistPairs,
+    queryPlaylistPairs,
     getPlaylists,
-    updatePlaylist
+    updatePlaylist,
+    createSong,
+    deleteSong,
+    replaceSong,
+    getSong,
+    getSongs
 }

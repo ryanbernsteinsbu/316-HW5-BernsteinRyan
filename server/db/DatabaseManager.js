@@ -16,6 +16,9 @@ class DatabaseManager{
     getPlaylistPairs(email){
         return null;
     }
+    queryPlaylistPairs(body){
+        return null;
+    }
     getPlaylist(id){
         return null;
     }
@@ -33,6 +36,21 @@ class DatabaseManager{
     }
     asyncFindUser(list){
         return 
+    }
+    createSong(body, userId){
+        return null;
+    }
+    deleteSong(id){
+        return null;
+    }
+    replaceSong(id, body){
+        return null;
+    }
+    getSong(id){
+        return null;
+    }
+    getSongs(body){
+        return null;
     }
 }
 

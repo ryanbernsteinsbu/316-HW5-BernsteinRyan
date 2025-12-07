@@ -15,7 +15,7 @@ const style1 = {
     width: 345,
     height: 250,
     backgroundSize: "contain",
-    backgroundImage: `url(https://i.insider.com/602ee9ced3ad27001837f2ac?})`,
+    backgroundColor: "white",
     border: '3px solid #000',
     padding: '20px',
     boxShadow: 24,
@@ -35,7 +35,7 @@ export default function MUIEditSongModal() {
             year: year,
             youTubeId: youTubeId
         };
-        store.addUpdateSongTransaction(store.currentSongIndex, newSongData);        
+        store.updateCurrentSong(newSongData);        
     }
 
     function handleCancelEditSong() {
