@@ -25,7 +25,7 @@ function PlaylistCard(props) {
     const [editActive, setEditActive] = useState(false);
     const [text, setText] = useState("");
     const [expanded, setExpanded] = useState(false);
-    const { idNamePair } = props;
+    const { idNamePair , play} = props;
 
     useEffect(() => {
         auth.getLoggedIn();
@@ -44,7 +44,10 @@ function PlaylistCard(props) {
             store.setCurrentList(id);
         }
     }
-
+    function handlePlay(event){
+        event.stopPropagation();
+        play();
+    }
     function handleToggleEdit(event) {
         event.stopPropagation();
         toggleEdit();
@@ -94,15 +97,8 @@ function PlaylistCard(props) {
         <Box sx={{ p: 1, flexGrow: 1 }}>{idNamePair.name} [{idNamePair.ownerName}]</Box>
         {true && (
             <Box sx={{ p: 1 }}>
-            <IconButton onClick={handleToggleEdit} aria-label='play'>
+            <IconButton onClick={handlePlay} aria-label='play'>
             <PlayArrowIcon style={{fontSize:'24pt'}} />
-            </IconButton>
-            </Box>
-        )}
-        {auth.loggedIn && (
-            <Box sx={{ p: 1 }}>
-            <IconButton onClick={handleToggleEdit} aria-label='copy'>
-            <ContentCopyIcon style={{fontSize:'24pt'}} />
             </IconButton>
             </Box>
         )}

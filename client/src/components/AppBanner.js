@@ -2,9 +2,9 @@ import { useContext, useState } from 'react';
 import { Link } from 'react-router-dom'
 import AuthContext from '../auth';
 import { GlobalStoreContext } from '../store'
-
+import { useHistory } from 'react-router-dom'
 import EditToolbar from './EditToolbar'
-
+import ActionButton from './ActionButton';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -19,7 +19,7 @@ export default function AppBanner() {
     const { store } = useContext(GlobalStoreContext);
     const [anchorEl, setAnchorEl] = useState(null);
     const isMenuOpen = Boolean(anchorEl);
-
+    const history = useHistory();    
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -81,7 +81,7 @@ export default function AppBanner() {
     let menu = loggedOutMenu;
     if (auth.loggedIn) {
         menu = loggedInMenu;
-        if (store.currentList) {
+        if (store.currentList && store.currentModal !== "PLAYER") {
             editToolbar = <EditToolbar />;
         }
     }
@@ -106,6 +106,12 @@ export default function AppBanner() {
                         sx={{ display: { xs: 'none', sm: 'block' } }}                        
                     >
                         <Link onClick={handleHouseClick} style={{ textDecoration: 'none', color: 'white', fontSize: '32px'}} to='/'>⌂</Link>
+                        <ActionButton onClick={() => {history.push("/playlists/")}} color="#1976d2" sx={{ m: 2 }}>
+                            Playlists
+                        </ActionButton>
+                        <ActionButton onClick={() => {history.push("/songs/")}} color="#1976d2" sx={{ m: 2 }}>
+                            Songs
+                        </ActionButton>
                     </Typography>
                     <Box sx={{ flexGrow: 1 }}>{editToolbar}</Box>
                     <Box sx={{ height: "60px", display: { xs: 'none', md: 'flex' } }}>

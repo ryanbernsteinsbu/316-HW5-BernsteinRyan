@@ -28,17 +28,47 @@ async function createUsers(data, Model) {
         });
     }
 }
-
 async function createPlaylist(data, Model) {
-        const newPlaylist = await Model.create({
+    try {
+        return await Model.create({
             _id: data._id,
             ownerEmail: data.ownerEmail,
             listeners: 0,
             name: data.name,
         });
+    } catch (err) {
+        // console.error("Playlist creation failed:", data);
+        // console.error("Error details:", err.errors || err);
+        // throw err; // rethrow if you want to stop
+    }
 }
+
+async function createPlaylistSong(data, Model) {
+    try {
+        return await Model.create({
+            position: data.position,
+            playlistId: data.playlistId,
+            songId: data.songId,
+        });
+    } catch (err) {
+        // console.error("PlaylistSong creation failed:", data);
+        // console.error("Error details:", err.errors || err);
+        // throw err;
+    }
+}
+
 async function createSong(data, Model) {
-        const newSong = await Model.create({
+    try {
+        if(
+            !(isValidUTF8(data.artist) &&
+            isValidUTF8(data.title) &&
+            isValidYear(data.year) &&
+            isValidYouTubeId(data.youTubeId))
+        ){
+            console.warn("Skipping invalid song:", data);
+            return;
+        }
+        return await Model.create({
             _id: data._id,
             ownerEmail: data.ownerEmail,
             listens: 0,
@@ -47,13 +77,11 @@ async function createSong(data, Model) {
             year: data.year,
             youTubeId: data.youTubeId,
         });
-}
-async function createPlaylistSong(data, Model) {
-        const newPlaylistSong = await Model.create({
-            position: data.position,
-            playlistId: data.playlistId,
-            songId: data.songId,
-        });
+    } catch (err) {
+        // console.error("Song creation failed:", data);
+        // console.error("Error details:", err.errors || err);
+        // throw err;
+    }
 }
 async function resetSQL(_user, _playlist, _song, _playlistSong) {
     const testData = require("../example-db-data.json")
@@ -134,7 +162,7 @@ async function resetSQL(_user, _playlist, _song, _playlistSong) {
         console.log("synced tables");
         await resetSQL(User, Playlist, Song, PlaylistSong)
     } catch (err){
-        console.error("error:" + err.message);
+        console.error("error:" + err);
     } finally {
         await sequelize.close();
     }

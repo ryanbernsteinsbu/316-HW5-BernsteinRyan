@@ -397,7 +397,27 @@ getSongs = async (req, res) => {
         return res.status(500).json({ errorMessage: 'Internal server error' });
     }
 }
+addPlaylistSong = async (req, res) => {
+    if(auth.verifyUser(req) === null){
+        return res.status(400).json({
+            errorMessage: 'UNAUTHORIZED'
+        });
+    }
 
+    try {
+        const songs = await dbm.addPlaylistSong(req.body.songId, req.body.playlistId);
+        if(!songs){
+            return res.status(404).json({
+                errorMessage: 'entry not created',
+            });
+        }
+
+        return res.status(200).json({ success: true, playlistSong: songs });
+    } catch(err){
+        console.error("getSongs error:", err);
+        return res.status(500).json({ errorMessage: 'Internal server error' });
+    }
+}
 
 module.exports = {
     createPlaylist,
@@ -411,5 +431,6 @@ module.exports = {
     deleteSong,
     replaceSong,
     getSong,
-    getSongs
+    getSongs,
+    addPlaylistSong
 }

@@ -52,6 +52,9 @@ class DatabaseManager{
     getSongs(body){
         return null;
     }
+    addPlaylistSong(songId, playlistId){
+        return null;
+    }
 }
 
 module.exports = DatabaseManager;

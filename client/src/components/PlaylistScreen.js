@@ -3,8 +3,10 @@ import { useLocation } from 'react-router-dom';
 import { GlobalStoreContext } from '../store'
 import AuthContext from '../auth';
 import PlaylistCard from './PlaylistCard.js'
-import { Grid, Box, Typography, List, TextField, MenuItem } from "@mui/material";
+import { Grid, Box, Typography, List, TextField, MenuItem, Button } from "@mui/material";
+import PlayPlaylistModal from './PlayPlaylistModal';
 import MUIDeleteModal from './MUIDeleteModal'
+
 export default function PlaylistScreen(){
     //Filters
     const location = useLocation();
@@ -19,9 +21,17 @@ export default function PlaylistScreen(){
     });
     //order
     const [sortOrder, setSortOrder] = useState("listeners-desc");
+    const [update, setUpdate] = useState(null);
     //playlists
     const [playlists, setPlaylists] = useState([]);
-
+    const [playing, setPlaying] = useState(null);
+    function handlePlay(id){
+        store.playPlaylist(id);
+    }
+    function handleCreateNewList() {
+        store.createNewList();
+        setUpdate(null);
+    }
     useEffect(() => {
         async function fetchFilteredPairs() {
             const query = {
@@ -48,7 +58,7 @@ export default function PlaylistScreen(){
             // }
         }
         fetchFilteredPairs();
-    }, [filters, sortOrder]);
+    }, [filters, sortOrder, store.idNamePairs]);
     
     // useEffect(() => {
     // }, [auth.loggedIn, location ]);
@@ -63,6 +73,7 @@ export default function PlaylistScreen(){
                         key={pair._id}
                         idNamePair={pair}
                         selected={false}
+                        play={() => {handlePlay(pair._id)}}
                     />
                 ))
                 
@@ -118,6 +129,7 @@ export default function PlaylistScreen(){
             </Grid>
             {/* right */}
             <Grid item xs={12} md={8} sx={{ position: "relative", zIndex: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <TextField
                 select
                 size="small"
@@ -130,11 +142,27 @@ export default function PlaylistScreen(){
                 <MenuItem value="NAME_A_Z">Playlist Name (A-Z)</MenuItem>
                 <MenuItem value="NAME_Z_A">Playlist Name (Z-A)</MenuItem>
             </TextField>
+            {auth.user && (<Button
+            variant="contained"
+            sx={{
+                minWidth: 40,
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                fontSize: 24,
+                padding: 0,
+            }}
+            onClick={handleCreateNewList}
+            >
+                +
+            </Button>)}
+        </Box>
                 <Box sx={{bgcolor:"background.paper"}} >
                     {
                         listCard
                     }
                 </Box>
+                <PlayPlaylistModal/> 
                 <MUIDeleteModal/>
             </Grid>
         </Grid>

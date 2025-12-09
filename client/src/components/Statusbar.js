@@ -13,7 +13,7 @@ function Statusbar() {
     const { store } = useContext(GlobalStoreContext);
     console.log("logged in: " +  auth.loggedIn);
     let text ="";
-    if (auth.loggedIn && store.currentList){
+    if (auth.loggedIn && store.currentList && store.currentModal !== "PLAYER"){
         text = store.currentList.name;
     return (
         <div id="playlister-statusbar">

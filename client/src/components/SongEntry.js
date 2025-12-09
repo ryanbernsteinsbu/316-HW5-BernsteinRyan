@@ -36,7 +36,8 @@ function SongEntry(props) {
 
     const handleAddToPlaylist = (playlistId) => {
         handleCloseMenu();
-        // store.addSongToPlaylist(song._id, playlistId)
+        store.addSongToPlaylist(song._id, playlistId)
+        console.log("adding song");
     };
     useEffect(() => {
         // auth.getLoggedIn();
@@ -55,9 +56,6 @@ function SongEntry(props) {
     async function handleDeleteList(event) {
         event.stopPropagation();
         store.markSongForDeletion(song._id);
-    }
-    function toggleAdd() { 
-        
     }
 
     let cardElement =

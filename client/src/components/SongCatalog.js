@@ -4,7 +4,7 @@ import { GlobalStoreContext } from '../store'
 import YouTube from 'react-youtube';
 import AuthContext from '../auth';
 import SongEntry from './SongEntry.js';
-import { Grid, Box, Typography, List, TextField, MenuItem } from "@mui/material";
+import { Button, Grid, Box, Typography, List, TextField, MenuItem } from "@mui/material";
 import MUIDeleteSongModal from './MUIDeleteSongModal'
 import MUIEditSongModal from './MUIEditSongModal';
 export default function SongCatalog(){
@@ -20,6 +20,14 @@ export default function SongCatalog(){
     const [sortOrder, setSortOrder] = useState("LISTENERS_HI_LO");
     const [songs, setSongs] = useState([]);
     const [selected, setSelected] = useState(null);
+    async function handleCreateNewSong(event){
+        const song = await store.createSong();
+        setFilters({
+            title: "Untitled",
+            artist: "Artist",
+            year: "2000",
+        });
+    }
     useEffect(() => {store.loadIdNamePairs()},[])
     useEffect(() => {
         async function fetchFilteredPairs() {
@@ -114,6 +122,7 @@ export default function SongCatalog(){
             </Grid>
             {/* right */}
             <Grid item xs={12} md={8} sx={{ position: "relative", zIndex: 2 }}>
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <TextField
                 select
                 size="small"
@@ -126,6 +135,21 @@ export default function SongCatalog(){
                 <MenuItem value="NAME_A_Z">Playlist Name (A-Z)</MenuItem>
                 <MenuItem value="NAME_Z_A">Playlist Name (Z-A)</MenuItem>
             </TextField>
+            {auth.user && (<Button
+            variant="contained"
+            sx={{
+                minWidth: 40,
+                width: 40,
+                height: 40,
+                borderRadius: "50%",
+                fontSize: 24,
+                padding: 0,
+            }}
+            onClick={handleCreateNewSong}
+            >
+                +
+            </Button>)}
+        </Box>
                 <Box sx={{bgcolor:"background.paper", maxHeight: 550, overflowY: "auto"}} >
                     {
                         listCard

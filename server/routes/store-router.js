@@ -21,4 +21,5 @@ router.delete('/song/:id', auth.verify, StoreController.deleteSong);
 router.get('/song/:id', auth.optionalVerify, StoreController.getSong);
 router.post('/songs', auth.optionalVerify, StoreController.getSongs);
 router.put('/song/:id', auth.verify, StoreController.replaceSong);
+router.post('/playlistsong/', auth.verify, StoreController.addPlaylistSong);
 module.exports = router

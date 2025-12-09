@@ -13,13 +13,21 @@ class PostgreDBM extends DatabaseManager{
     // Playlists     
     createPlaylist(body, userId) {
         async function doCreatePlaylist(){
+            function getID(){
+                const out = [...Array(24)].map(() => Math.floor(Math.random() * 16).toString(16)); //fill with random hex
+                return out.join("");//join and return
+            }
+
             try {
                 const user = await this.UserModel.findOne({ where: { _id: userId } })
                 if (!user) throw new Error("User not found");
 
-                const playlist = this.PlaylistModel.create(body);
+                const playlist = this.PlaylistModel.create({
+                    ...body,
+                    _id: getID()
+                });
 
-                return playlist;
+                return {...playlist, songs: []};
             } catch (err) {
                 console.error("Error creating playlist:", err.message);
                 return null;
@@ -349,10 +357,14 @@ class PostgreDBM extends DatabaseManager{
     createSong(body, userId) {
         async function doCreateSong(){
             try {
+                function getID(){
+                    const out = [...Array(24)].map(() => Math.floor(Math.random() * 16).toString(16)); //fill with random hex
+                    return out.join("");//join and return
+                }
                 const user = await this.UserModel.findOne({ where: { _id: userId } })
                 if (!user) throw new Error("User not found");
 
-                const song = this.SongModel.create(body);
+                const song = this.SongModel.create({...body, _id: getID()});
 
                 return song;
             } catch (err) {
@@ -433,6 +445,33 @@ class PostgreDBM extends DatabaseManager{
 
         }
         return doGet.bind(this)();
+    }
+    addPlaylistSong(songId, playlistId){
+        async function doCreate(){
+            try{
+                const maxEntry = await this.PlaylistSongModel.findOne({
+                    where: { playlistId: playlistId },
+                    order: [['position', 'DESC']],
+                    attributes: ['position']
+                });
+                let nextPosition = 0;
+                if (maxEntry && maxEntry.position !== null) {
+                    nextPosition = maxEntry.position + 1;
+                }
+                console.log(songId + " " + playlistId + " " + nextPosition);
+                const newEntry = await this.PlaylistSongModel.create({
+                    playlistId: playlistId,
+                    songId: songId,
+                    position: nextPosition
+                });
+
+                return newEntry;
+            } catch(err) {
+                console.error("failed to create entry", err);
+                return false;
+            }
+        }
+        return doCreate.bind(this)();
     }
 }
 

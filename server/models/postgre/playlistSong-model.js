@@ -21,6 +21,14 @@ const PlaylistSong = sequelize.define("PlaylistSong", {
     position: {
         type: DataTypes.INTEGER,
     },
+}, {
+    indexes: [
+        {
+            unique: true,
+            fields: ['playlistId', 'position']
+        }
+    ],
+    id: false,
 });
 
 module.exports = PlaylistSong;
