@@ -157,7 +157,7 @@ export default function PlaylistScreen(){
                 +
             </Button>)}
         </Box>
-                <Box sx={{bgcolor:"background.paper"}} >
+                <Box sx={{bgcolor:"background.paper", maxHeight: 550, overflowY: "auto"}} >
                     {
                         listCard
                     }

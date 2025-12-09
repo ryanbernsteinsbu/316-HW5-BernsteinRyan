@@ -211,9 +211,8 @@ class PostgreDBM extends DatabaseManager{
                     };
                     pairs.push(pair);
                 }
-                return pairs;
-                // return [1,2,3,3];
-
+                // return pairs;
+                return (pairs.length > 25 ? pairs.slice(0, 25) :  pairs)
             } catch (err) {
                 console.error("Error getting playlist pairs:", err.message);
                 return [];
@@ -433,10 +432,25 @@ class PostgreDBM extends DatabaseManager{
                     ...(songArtist ? {artist:{[Op.like]: `%${songArtist}%`}}: {}),
                     ...(songYear ? { year: Number(songYear) } : {})
                 }
-                const order = {
+                let order = [];
 
+                switch (sortOrder) {
+                    case "LISTENERS_HI_LO":
+                        order = [["listens", "DESC"]];
+                        break;
+                    case "LISTENERS_LO_HI":
+                        order = [["listens", "ASC"]];
+                        break;
+                    case "NAME_A_Z":
+                        order = [["title", "ASC"]];
+                        break;
+                    case "NAME_Z_A":
+                        order = [["title", "DESC"]];
+                        break;
+                    default:
+                        order = [["title", "ASC"]];
                 }
-                const songs = await this.SongModel.findAll({where});
+                const songs = await this.SongModel.findAll({where, order, limit: 100});
                 return songs ? songs : null;
             } catch (err) {
                 console.error("Error retrieving songs:", err.message);
